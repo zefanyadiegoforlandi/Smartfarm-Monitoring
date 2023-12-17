@@ -22,6 +22,9 @@ import dashboardCard08 from './components/dashboard-card-08';
 import dashboardCard09 from './components/dashboard-card-09';
 import dashboardCard11 from './components/dashboard-card-11';
 
+import Swal from 'sweetalert2';
+window.Swal = Swal;
+
 // Call Alpine
 window.Alpine = Alpine;
 Alpine.start();
@@ -121,3 +124,15 @@ document.addEventListener('DOMContentLoaded', () => {
   dashboardCard09();
   dashboardCard11();
 });
+
+
+function showAlert(message, type) {
+    Swal.fire({
+        title: 'Notifikasi',
+        text: message,
+        icon: type,
+        showConfirmButton: false,
+        timer: 2000,
+    });
+}
+

@@ -78,14 +78,82 @@
                                 </form>
                             </td>
                             <td class="py-2 px-4 border-b text-center">{{ $s->id_lahan}}</td>
-                            <td class="py-2 px-4 border-b text-center">{{ $s->lahan->alamat_lahan }}</td>
+                            <td class="py-2 px-4 border-b text-center">{{ optional($s->lahan)->alamat_lahan ?? 'Tidak ada lahan' }}</td>
                             <td class="py-2 px-4 border-b text-center">{{ $s->tanggal_aktivasi}}</td>
                         </tr>
                         @endforeach
-                        <!-- Add more rows as needed -->
                     </tbody>
                     
                 </table>
+
+                <nav aria-label="Page navigation example">
+                    <ul class="list-style-none flex">
+                        {{-- Tombol Previous --}}
+                        @if ($sensor->onFirstPage())
+                        <li>
+                            <a class="pointer-events-none relative block rounded-full bg-gray-300 px-3 py-1.5 
+                                text-sm text-neutral-500 transition-all duration-300 dark:text-neutral-400">&lt;</a>
+                        </li>
+                        @else
+                        <li>
+                            <a class="relative block rounded-full bg-gray-300 px-3 py-1.5 text-sm text-neutral-600 
+                                transition-all duration-300 hover:bg-green-100 dark:text-white dark:hover:bg-green-700 dark:hover:text-white"
+                                href="{{ $sensor->previousPageUrl() }}">&lt;</a>
+                        </li>
+                        @endif
+                
+                        {{-- Tautan Halaman --}}
+                        @foreach ($sensor->getUrlRange(1, $sensor->lastPage()) as $page => $url)
+                            @if ($page == 1 || $page == $sensor->lastPage() || 
+                                ($page >= $sensor->currentPage() - 2 && $page <= $sensor->currentPage() + 2))
+                                {{-- Tampilkan nomor halaman --}}
+                                <li aria-current="{{ ($page == $sensor->currentPage()) ? 'page' : '' }}">
+                                    <a class="relative block rounded 
+                                        @if ($page == $sensor->currentPage()) 
+                                            bg-green-500 text-white
+                                        @else 
+                                            bg-transparent text-neutral-600 
+                                            hover:bg-green-100 dark:text-white dark:hover:bg-green-700 dark:hover:text-white
+                                        @endif
+                                        px-3 py-1.5 text-sm font-medium transition-all duration-300"
+                                        href="{{ ($page == $sensor->currentPage()) ? '#' : $url }}"
+                                        @if ($page == $sensor->currentPage())
+                                            aria-disabled="true"
+                                        @endif
+                                    >{{ $page }}
+                                        @if ($page == $sensor->currentPage())
+                                        <span class="absolute -m-px h-px w-px overflow-hidden whitespace-nowrap border-0 p-0 [clip:rect(0,0,0,0)]">(current)</span>
+                                        @endif
+                                    </a>
+                                </li>
+                            @elseif ($page == $sensor->currentPage() - 3)
+                                <li>
+                                    <span class="relative block rounded px-3 py-1.5 text-sm text-neutral-600 
+                                        transition-all duration-300 dark:text-white dark:hover:bg-green-700 dark:hover:text-white">...</span>
+                                </li>
+                            @elseif ($page == $sensor->currentPage() + 3)
+                                <li>
+                                    <span class="relative block rounded px-3 py-1.5 text-sm text-neutral-600 
+                                        transition-all duration-300 dark:text-white dark:hover:bg-green-700 dark:hover:text-white">...</span>
+                                </li>
+                            @endif  
+                        @endforeach
+                        @if ($sensor->hasMorePages())
+                            <li>
+                                <a class="relative block rounded-full bg-gray-300 px-3 py-1.5 text-sm text-neutral-600 
+                                    transition-all duration-300 hover:bg-green-100 dark:text-white dark:hover:bg-green-700 dark:hover:text-white"
+                                    href="{{ $sensor->nextPageUrl() }}">&gt;</a>
+                            </li>
+                            @else
+                            <li>
+                                <a class="relative block rounded-full bg-gray-300 px-3 py-1.5 text-sm text-neutral-500 
+                                    transition-all duration-300 dark:text-neutral-400 hover:bg-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                                    href="#!">&gt;</a>
+                            </li>
+                        @endif
+                    </ul>
+                </nav>
+                                                 
             </div>
         </div>
         
@@ -154,6 +222,30 @@
                 dateFormat: "Y-m-d H:i:s", // Format tanggal dan waktu
                 defaultDate: new Date(), // Gunakan waktu saat ini sebagai nilai awal
 
+            });
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const successMessage = "{{ session('success') }}";
+        
+                if (successMessage) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+        
+                    Toast.fire({
+                        icon: 'success',
+                        title: successMessage
+                    });
+                }
             });
         </script>
         

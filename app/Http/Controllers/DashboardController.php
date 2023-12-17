@@ -5,6 +5,8 @@
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\DB;
     use Illuminate\Support\Facades\Http;
+    use Illuminate\Pagination\LengthAwarePaginator;
+
     use App\Models\DataFeed;
     use Carbon\Carbon;
     use App\Models\Users;
@@ -64,16 +66,34 @@
             return view('pages/add/daftar-farmer', compact('dataFeed', 'users'));
         }
 
+
         public function daftar_sensor()
         {
             $dataFeed = new DataFeed();
             $batas = 15;
-
+        
             $sensor = Sensor::orderByRaw("LENGTH(id_sensor), id_sensor")
-                   ->paginate($batas);
-
-            return view('pages/add/daftar-sensor', compact('dataFeed', 'sensor'));
+                ->paginate($batas);
+            $currentPage = $sensor->currentPage();
+            $lastPage = $sensor->lastPage();
+            $pageRange = [];
+            $pageRange[] = 1; 
+            for ($i = max(2, $currentPage - 2); $i <= min($currentPage + 2, $lastPage - 1); $i++) {
+                $pageRange[] = $i;
+            }
+        
+            $pageRange[] = $lastPage;
+            $customPaginator = new LengthAwarePaginator(
+                $sensor->items(),
+                $sensor->total(),
+                $sensor->perPage(),
+                $currentPage,
+                ['path' => LengthAwarePaginator::resolveCurrentPath()]
+            );
+        
+            return view('pages/add/daftar-sensor', compact('dataFeed', 'customPaginator','sensor'));
         }
+        
 
 
         //SEARCH//
@@ -239,11 +259,22 @@
             return redirect('/pages/add/daftar-farmer');
         }
 
+
         public function read_lahan_destroy($id_lahan){
-            $lahan = Lahan::find($id_lahan);
-            $lahan->delete();
-            return redirect('/pages/add/daftar-lahan');
+            try {
+                DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        
+                $lahan = Lahan::find($id_lahan);
+                $lahan->delete();
+        
+                DB::statement('SET FOREIGN_KEY_CHECKS=1');
+        
+                return redirect('/pages/add/daftar-lahan');
+            } catch (\Exception $e) {
+                return redirect('/pages/add/daftar-lahan')->with('error', 'Terjadi kesalahan saat menghapus rekaman.');
+            }
         }
+        
         public function read_sensor_destroy($id_sensor){
             $sensor = Sensor::find($id_sensor);
             $sensor->delete();

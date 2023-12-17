@@ -23,64 +23,65 @@
       </a>
     </div>
 
-    <!-- Links -->
-    <div class="space-y-8 mb-10">
-      <!-- Pages group -->
-      <div>
-        <ul class="mt-3">
-          <!-- Dashboard -->
-          <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if(Request::segment(1) == 'dashboard'){{ 'bg-white-900' }}@endif">
-            <a class="block text-black-200 text-lg hover:text-black truncate transition duration-150 @if(Request::segment(1) == 'dashboard'){{ 'hover:text-slate-200' }}@endif" href="{{ route('dashboard') }}">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                  <!-- Sesuaikan ikon jika diperlukan -->
-                  <img src="{{ asset('images/home_icon.svg') }}" class="w-23 h-23 ml-3 shrink-0 h-6 w-6" viewBox="0 0 24 24">
-                  <span class="text-lg font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Dashboard</span>
-                </div>
+   <!-- Links -->
+   <div class="space-y-8 mb-10">
+    <!-- Pages group -->
+    <div>
+      <ul class="mt-3">
+        <!-- Dashboard -->
+        <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if(Request::segment(1) == 'dashboard'){{ 'text-green-500' }}@endif">
+          <a class="block text-black-200 text-lg hover:text-green-500 truncate transition duration-150 focus:text-slate-200 focus:outline-none @if(Request::segment(1) == 'dashboard'){{ 'hover:text-green-500' }}@endif" href="{{ route('dashboard') }}">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center hover:text-green-500" style="filter: brightness(1); transition: filter 0.2s;" onmouseover="this.style.filter='brightness(1.5)'" onmouseout="this.style.filter='brightness(1)'">
+                <img src="{{ asset('images/home_icon.svg') }}" class="w-23 h-23 ml-3 shrink-0 h-6 w-6 hover:text-green-500" viewBox="0 0 24 24">
+                <span class="text-lg font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 hover:text-green-500">Dashboard</span>
               </div>
-            </a>
-          </li>
-
-          <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if(Request::segment(1) == 'daftar-farmer'){{ 'bg-white-900' }}@endif">
-            <a class="block text-black-200 text-lg hover:text-black truncate transition duration-150 @if(Request::segment(1) == 'daftar-farmer'){{ 'hover:text-slate-200' }}@endif" href="{{ route('daftar-farmer') }}">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                  <!-- Sesuaikan ikon jika diperlukan -->
-                  <img src="{{ asset('images/farmer_icon.svg') }}" class="w-23 h-23 ml-3 shrink-0 h-6 w-6" viewBox="0 0 24 24">
-                  <span class="text-lg font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Daftar Farmer</span>
-                </div>
+            </div>
+          </a>
+        </li>
+  
+        <!-- Daftar Farmer -->
+        <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if(Request::is('pages/add/daftar-farmer')){{ 'text-green-500' }}@endif">
+          <a class="block text-black-200 text-lg hover:text-green-500 truncate transition duration-150 focus:text-slate-200 focus:outline-none @if(Request::segment(1) == 'daftar-farmer'){{ 'hover:text-green-500' }}@endif" href="{{ route('daftar-farmer') }}">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center hover:text-green-500" style="filter: brightness(1); transition: filter 0.2s;" onmouseover="this.style.filter='brightness(1.5)'" onmouseout="this.style.filter='brightness(1)'">
+                <img src="{{ asset('images/farmer_icon.svg') }}" class="w-23 h-23 ml-3 shrink-0 h-6 w-6 hover:text-green-500" viewBox="0 0 24 24">
+                <span class="text-lg font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 hover:text-green-500">Daftar Farmer</span>
               </div>
-            </a>
-          </li>
-
-
-          <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if(Request::segment(1) == 'daftar-lahan'){{ 'bg-white-900' }}@endif">
-            <a class="block text-black-200 text-lg hover:text-black truncate transition duration-150 @if(Request::segment(1) == 'daftar-lahan'){{ 'hover:text-slate-200' }}@endif" href="{{ route('daftar-lahan') }}">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                  <!-- Sesuaikan ikon jika diperlukan -->
-                  <img src="{{ asset('images/lahan_icon.svg') }}" class="w-23 h-23 ml-3 shrink-0 h-6 w-6" viewBox="0 0 24 24">
-                  <span class="text-lg font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Daftar Lahan</span>
-                </div>
+            </div>
+          </a>
+        </li>
+  
+        <!-- Daftar Lahan -->
+        <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if(Request::is('pages/add/daftar-lahan')){{ 'text-green-500' }}@endif">
+          <a class="block text-black-200 text-lg hover:text-green-500 truncate transition duration-150 focus:text-slate-200 focus:outline-none @if(Request::segment(1) == 'daftar-lahan'){{ 'hover:text-green-500' }}@endif" href="{{ route('daftar-lahan') }}">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center hover:text-green-500" style="filter: brightness(1); transition: filter 0.2s;" onmouseover="this.style.filter='brightness(1.5)'" onmouseout="this.style.filter='brightness(1)'">
+                <img src="{{ asset('images/lahan_icon.svg') }}" class="w-23 h-23 ml-3 shrink-0 h-6 w-6 hover:text-green-500" viewBox="0 0 24 24">
+                <span class="text-lg font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 hover:text-green-500">Daftar Lahan</span>
               </div>
-            </a>
-          </li>
-
-          <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if(Request::segment(1) == 'daftar-sensor'){{ 'bg-white-900' }}@endif">
-            <a class="block text-black-200 text-lg hover:text-black truncate transition duration-150 @if(Request::segment(1) == 'daftar-sensor'){{ 'hover:text-slate-200' }}@endif" href="{{ route('daftar-sensor') }}">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                  <!-- Sesuaikan ikon jika diperlukan -->
-                  <img src="{{ asset('images/sensor_icon.svg') }}" class="w-23 h-23 ml-3 shrink-0 h-6 w-6" viewBox="0 0 24 24">
-                  <span class="text-lg font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Daftar Sensor</span>
-                </div>
+            </div>
+          </a>
+        </li>
+  
+        <!-- Daftar Sensor -->
+        <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 @if(Request::is('pages/add/daftar-Sensor')){{ 'text-green-500' }}@endif">
+          <a class="block text-black-200 text-lg hover:text-green-500 truncate transition duration-150 focus:text-slate-200 focus:outline-none @if(Request::segment(1) == 'daftar-sensor'){{ 'hover:text-green-500' }}@endif" href="{{ route('daftar-sensor') }}">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center hover:text-green-500" style="filter: brightness(1); transition: filter 0.2s;" onmouseover="this.style.filter='brightness(1.5)'" onmouseout="this.style.filter='brightness(1)'">
+                <img src="{{ asset('images/sensor_icon.svg') }}" class="w-23 h-23 ml-3 shrink-0 h-6 w-6 hover:text-green-500" viewBox="0 0 24 24">
+                <span class="text-lg font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 hover:text-green-500">Daftar Sensor</span>
               </div>
-            </a>
-          </li>
-        </ul>
-
-      </div>
+            </div>
+          </a>
+        </li>
+      </ul>
     </div>
+  </div>
+  
+  
+
+
 
     <div style="display: flex; flex-direction: column; align-items: center; height: 100vh; mt-10">
       <div id="animatedRectangle" style="width: 206px; height: 86px; background-color: #ffffff; display: none; margin-bottom: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); border-radius: 5px;">
