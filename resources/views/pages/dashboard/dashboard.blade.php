@@ -4,7 +4,7 @@
         <!-- Welcome banner -->
         <div class="welcome-css">
             <div class="px-4 sm:px-6 lg:px-8" >
-                <div class="flex items-center justify-between  -mb-px">
+                <div class="flex items-center justify-between mb-px">
             
                     <!-- Header: Left side -->
                     <div class="flex">
@@ -50,23 +50,25 @@
             </div>
         </div>
 
-        <div class="farmers-list flex flex-col sm:flex-row mx-auto gap-6">
-            <div class="custom-frame-1 flex justify-center items-center bg-green-200 p-4 rounded-xl sm:w-1/3 max-w-sm" style=" max-width: 330px; height: 117px; border-radius: 27px; background-color:#C8E0AF;">
-                <div class="teks-frame  ml-3 mb-3  text-center">
-                    <div class="text-frame-1" style="font-size: 24px">
-                        <p class="text-dark font-medium text-league-spartan mb-0">{{ $jumlah_users }} Petani</p>
+        <div class="farmers-list flex flex-col sm:flex-row mx-auto gap-8 ml-20">
+            <div class="custom-frame-3 flex justify-center items-center bg-green-200 p-4 rounded-xl" 
+                style=" max-width: 290px; height: 116px; border-radius: 27px; background-color: #C8E0AF;">
+                <div class="teks-frame">
+                    <div class="text-frame-1 text-center" style="font-size: 24px">
+                        <p class="text-dark font-medium text-league-spartan ml-3">{{ $jumlah_users }} Petani</p>
                     </div>
-                    <div class="text-frame-2" style="font-size: 14px ">
+                    <div class="text-frame-2 ml-1" style="font-size: 14px ">
                         <p class="text-dark font-regular text-league-spartan mb-0">telah terdaftar pada sistem</p>
                     </div>
                 </div>
                 <div class="img-frame-1 ml-2 mt-2">
-                    <img src="{{ asset('images/petani_icon.svg') }}" class="w-85 h-85 ml-3">
+                    <img src="{{ asset('images/petani_icon.svg') }}" class="w-75 h-75">
                 </div>
             </div>
         
-            <div class="custom-frame-2 flex justify-center items-center bg-green-200 p-4 rounded-xl sm:w-1/3 max-w-sm" style=" max-width: 330px; height: 117px; border-radius: 27px; background-color:#C8E0AF;">
-                <div class="teks-frame ml-3 mb-3 text-center">
+            <div class="custom-frame-3 flex justify-center items-center bg-green-200 p-4 rounded-xl" 
+                style="width: 100%; max-width: 290px; height: 116px; border-radius: 27px; background-color: #C6D2B9;">
+                <div class="teks-frame ml-3 text-center">
                     <div class="text-frame-1" style="font-size: 24px">
                         <p class="text-dark font-medium text-league-spartan mb-0"> {{ $jumlah_sensor }} Sensor</p>
                     </div>
@@ -79,8 +81,10 @@
                 </div>
             </div>
         
-            <div class="custom-frame-3 flex justify-center items-center bg-green-200 p-4 rounded-xl sm:w-1/3 max-w-sm" style=" max-width: 330px; height: 117px; border-radius: 27px; background-color:#C8E0AF;">
-                <div class="teks-frame  ml-3 mb-3  text-center">
+            <div class="custom-frame-3 flex justify-center items-center bg-green-200 p-4 rounded-xl" 
+                style="width: 100%; max-width: 290px; height: 116px; border-radius: 27px; background-color: #CAE8AC;">
+
+                <div class="teks-frame  ml-3 text-center">
                     <div class="text-frame-1" style="font-size: 24px">
                         <p class="text-dark font-medium text-league-spartan mb-0">{{ $jumlah_lahan }} Lokasi</p>
                     </div>
@@ -171,71 +175,6 @@
                 </div>
     
             </div>
-    
-            <!-- Modal container -->
-            <div id="modal" class="fixed hidden inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                <!-- Modal content -->
-                <div class="bg-white mx-4 md:mx-auto w-full max-w-lg rounded p-8">
-                    <!-- Modal header -->
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-xl md:text-2xl font-bold">Modal Header</h2>
-                        <button id="closeModal" class="text-gray-700 hover:text-gray-900">
-                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
-                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
-                            </svg>
-                        </button>
-                    </div>
-                    <!-- Modal body -->
-                    <form action="{{ route('farmer-store') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <div class="mb-4">
-                            <label for="name" class="block text-gray-700 font-bold">Nama</label>
-                            <input type="text" name="name" id="name" class="border border-gray-300 rounded px-3 py-2 w-full">
-                        </div>
-                        <div class="mb-4">
-                            <label for="email" class="block text-gray-700 font-bold">Email</label>
-                            <input type="text" name="email" id="email" class="border border-gray-300 rounded px-3 py-2 w-full">
-                        </div>
-                        <div class="mb-4">
-                            <label for="username" class="block text-gray-700 font-bold">Username</label>
-                            <input type="text" name="username" id="username" class="border border-gray-300 rounded px-3 py-2 w-full">
-                        </div>
-                        <div class="mb-4">
-                            <label for="password" class="block text-gray-700 font-bold">Password</label>
-                            <input type="text" name="password" id="password" class="border border-gray-300 rounded px-3 py-2 w-full">
-                        </div>
-    
-                        <div class="flex justify-end mt-4">
-                            <button class="btn bg-red-500 text-white mr-4" onclick="closeModal()" type="button">Cancel</button>
-                            <button type="submit" class="btn bg-green-500 text-white" onclick="closeModal()">OK</button>
-                        </div>
-                    </form>
-    
-                </div>
-                <!-- Modal footer -->
-    
-    
-            </div>
-        </div>
-    
-        <script>
-            // JavaScript to handle modal interactions
-            const openModalButton = document.getElementById('openModal');
-            const closeModalButton = document.getElementById('closeModal');
-            const modal = document.getElementById('modal');
-    
-            openModalButton.addEventListener('click', () => {
-                modal.classList.remove('hidden');
-            });
-    
-            closeModalButton.addEventListener('click', () => {
-                modal.classList.add('hidden');
-            });
-    
-            function closeModal() {
-                modal.classList.add('hidden');
-            }
-        </script>
          <script>
             function updateRealTimeDate() {
             const now = new Date();

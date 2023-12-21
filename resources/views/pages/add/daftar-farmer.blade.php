@@ -67,9 +67,10 @@
                                     <button class="submit">
                                         <div class="flex items-center justify-start ms-5">
                                             <div>
-                                                <img src="{{ asset('images/user_besar_icon.svg') }}" alt="User Image" style="width: 30px; height: 30px; object-fit: cover;" class="mx-2">
+                                                <img src="{{ asset('images/user_besar_icon.svg') }}" alt="User Image" 
+                                                    style="width: 30px; height: 30px; object-fit: cover;" class="mx-2">
                                             </div>
-                                            <p class="ms-3">{{ $u->name}}</p>
+                                            <p class="ms-3" style="color:#416D14;">{{ $u->name}}</p>
                                         </div>
                                     </button>
                                 </form>
@@ -156,7 +157,55 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const successMessage = "{{ session('success') }}";
+            const successMessage = "{{ session('simpan') }}";
+    
+            if (successMessage) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+    
+                Toast.fire({
+                    icon: 'success',
+                    title: successMessage
+                });
+            }
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const successMessage = "{{ session('delete') }}";
+    
+            if (successMessage) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+    
+                Toast.fire({
+                    icon: 'success',
+                    title: successMessage
+                });
+            }
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const successMessage = "{{ session('tambah') }}";
     
             if (successMessage) {
                 const Toast = Swal.mixin({

@@ -91,6 +91,73 @@
                     </tbody>
                     
                 </table>
+                <nav aria-label="Page navigation example">
+                    <ul class="list-style-none flex">
+                        {{-- Tombol Previous --}}
+                        @if ($lahan->onFirstPage())
+                        <li>
+                            <a class="pointer-events-none relative block rounded-full bg-gray-300 px-3 py-1.5 
+                                text-sm text-neutral-500 transition-all duration-300 dark:text-neutral-400">&lt;</a>
+                        </li>
+                        @else
+                        <li>
+                            <a class="relative block rounded-full bg-gray-300 px-3 py-1.5 text-sm text-neutral-600 
+                                transition-all duration-300 hover:bg-green-100 dark:text-white dark:hover:bg-green-700 dark:hover:text-white"
+                                href="{{ $lahan->previousPageUrl() }}">&lt;</a>
+                        </li>
+                        @endif
+                
+                        {{-- Tautan Halaman --}}
+                        @foreach ($lahan->getUrlRange(1, $lahan->lastPage()) as $page => $url)
+                            @if ($page == 1 || $page == $lahan->lastPage() || 
+                                ($page >= $lahan->currentPage() - 2 && $page <= $lahan->currentPage() + 2))
+                                {{-- Tampilkan nomor halaman --}}
+                                <li aria-current="{{ ($page == $lahan->currentPage()) ? 'page' : '' }}">
+                                    <a class="relative block rounded 
+                                        @if ($page == $lahan->currentPage()) 
+                                            bg-green-500 text-white
+                                        @else 
+                                            bg-transparent text-neutral-600 
+                                            hover:bg-green-100 dark:text-white dark:hover:bg-green-700 dark:hover:text-white
+                                        @endif
+                                        px-3 py-1.5 text-sm font-medium transition-all duration-300"
+                                        href="{{ ($page == $lahan->currentPage()) ? '#' : $url }}"
+                                        @if ($page == $lahan->currentPage())
+                                            aria-disabled="true"
+                                        @endif
+                                    >{{ $page }}
+                                        @if ($page == $lahan->currentPage())
+                                        <span class="absolute -m-px h-px w-px overflow-hidden whitespace-nowrap border-0 p-0 [clip:rect(0,0,0,0)]">(current)</span>
+                                        @endif
+                                    </a>
+                                </li>
+                            @elseif ($page == $lahan->currentPage() - 3)
+                                <li>
+                                    <span class="relative block rounded px-3 py-1.5 text-sm text-neutral-600 
+                                        transition-all duration-300 dark:text-white dark:hover:bg-green-700 dark:hover:text-white">...</span>
+                                </li>
+                            @elseif ($page == $lahan->currentPage() + 3)
+                                <li>
+                                    <span class="relative block rounded px-3 py-1.5 text-sm text-neutral-600 
+                                        transition-all duration-300 dark:text-white dark:hover:bg-green-700 dark:hover:text-white">...</span>
+                                </li>
+                            @endif  
+                        @endforeach
+                        @if ($lahan->hasMorePages())
+                            <li>
+                                <a class="relative block rounded-full bg-gray-300 px-3 py-1.5 text-sm text-neutral-600 
+                                    transition-all duration-300 hover:bg-green-100 dark:text-white dark:hover:bg-green-700 dark:hover:text-white"
+                                    href="{{ $lahan->nextPageUrl() }}">&gt;</a>
+                            </li>
+                            @else
+                            <li>
+                                <a class="relative block rounded-full bg-gray-300 px-3 py-1.5 text-sm text-neutral-500 
+                                    transition-all duration-300 dark:text-neutral-400 hover:bg-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                                    href="#!">&gt;</a>
+                            </li>
+                        @endif
+                    </ul>
+                </nav>
             </div>
         </div>
 
@@ -109,37 +176,30 @@
                </svg>
                </button>
            </div>
-               <!-- Modal body -->
-
                <form action="{{ route('lahan-store') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="mb-4">
-                    <label for="id_user" class="block text-gray-700 font-bold">ID FARMER</label>
-                    <input type="text" name="id_user" id="id_user" class="border border-gray-300 rounded px-3 py-2 w-full">
-                </div>
-                <div class="mb-4">
-                    <label for="alamat_lahan" class="block text-gray-700 font-bold">Alamat Lahan</label>
-                    <input type="text" name="alamat_lahan" id="alamat_lahan"  class="border border-gray-300 rounded px-3 py-2 w-full">
-                </div>
-                <div class="mb-4">
-                    <label for="luas_lahan" class="block text-gray-700 font-bold">Luas Lahan</label>
-                    <input type="number" name="luas_lahan" id="luas_lahan"  class="border border-gray-300 rounded px-3 py-2 w-full">
-                </div>
-            
-                <div class="flex justify-end mt-4">
-                    <button class="btn bg-red-500 text-white mr-4" onclick="closeModal()" type="button">Cancel</button>
-                    <button type="submit" class="btn bg-green-500 text-white" onclick="closeModal()">OK</button>
-                </div>
-            </form>
-            
-            
-            
-            </div>
-                <!-- Modal footer -->
+                    @csrf
+                    <div class="mb-4">
+                        <label for="id_user" class="block text-gray-700 font-bold">ID FARMER</label>
+                        <input type="text" name="id_user" id="id_user" class="border border-gray-300 rounded px-3 py-2 w-full">
+                    </div>
+                    <div class="mb-4">
+                        <label for="alamat_lahan" class="block text-gray-700 font-bold">Alamat Lahan</label>
+                        <input type="text" name="alamat_lahan" id="alamat_lahan"  class="border border-gray-300 rounded px-3 py-2 w-full">
+                    </div>
+                    <div class="mb-4">
+                        <label for="luas_lahan" class="block text-gray-700 font-bold">Luas Lahan</label>
+                        <input type="number" name="luas_lahan" id="luas_lahan"  class="border border-gray-300 rounded px-3 py-2 w-full">
+                    </div>
                 
+                    <div class="flex justify-end mt-4">
+                        <button class="btn bg-red-500 text-white mr-4" onclick="closeModal()" type="button">Cancel</button>
+                        <button type="submit" class="btn bg-green-500 text-white" onclick="closeModal()">OK</button>
+                    </div>
+                </form>
+            </div>                
                
-            </div>
         </div>
+    </div>
    
         <script>
             // JavaScript to handle modal interactions
@@ -174,7 +234,55 @@
         @endif
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                const successMessage = "{{ session('success') }}";
+                const successMessage = "{{ session('simpan') }}";
+        
+                if (successMessage) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+        
+                    Toast.fire({
+                        icon: 'success',
+                        title: successMessage
+                    });
+                }
+            });
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const successMessage = "{{ session('delete') }}";
+        
+                if (successMessage) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+        
+                    Toast.fire({
+                        icon: 'success',
+                        title: successMessage
+                    });
+                }
+            });
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const successMessage = "{{ session('tambah') }}";
         
                 if (successMessage) {
                     const Toast = Swal.mixin({

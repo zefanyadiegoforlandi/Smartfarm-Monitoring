@@ -6,6 +6,8 @@
     use Illuminate\Support\Facades\DB;
     use Illuminate\Support\Facades\Http;
     use Illuminate\Pagination\LengthAwarePaginator;
+    use Illuminate\Support\Facades\Session;
+
 
     use App\Models\DataFeed;
     use Carbon\Carbon;
@@ -37,6 +39,7 @@
             $sensor = Sensor::orderBy('id_sensor', 'desc')->paginate($batas);
             $jumlah_users = User::count();
             $jumlah_sensor = Sensor::count();
+            
             $jumlah_lahan = Lahan::count();
             $no=$batas*($users->currentPage() - 1);
 
@@ -49,9 +52,24 @@
         {
             $dataFeed = new DataFeed();
             $batas = 15;
-            $lahan= Lahan::orderBy('id_lahan', 'desc')->paginate($batas);
-            $no = $batas * ($lahan->currentPage() - 1);
-            return view('pages/add/daftar-lahan', compact('dataFeed','lahan'));
+            $lahan= Lahan::orderByRaw("LENGTH(id_lahan),  id_lahan")->paginate($batas);
+            $currentPage = $lahan->currentPage();
+            $lastPage = $lahan->lastPage();
+            $pageRange = [];
+            $pageRange[] = 1; 
+            for ($i = max(2, $currentPage - 2); $i <= min($currentPage + 2, $lastPage - 1); $i++) {
+                $pageRange[] = $i;
+            }
+        
+            $pageRange[] = $lastPage;
+            $customPaginator = new LengthAwarePaginator(
+                $lahan->items(),
+                $lahan->total(),
+                $lahan->perPage(),
+                $currentPage,
+                ['path' => LengthAwarePaginator::resolveCurrentPath()]
+            );            
+            return view('pages/add/daftar-lahan', compact('dataFeed','lahan','customPaginator'));
         }
        
         public function daftar_farmer()
@@ -65,7 +83,6 @@
 
             return view('pages/add/daftar-farmer', compact('dataFeed', 'users'));
         }
-
 
         public function daftar_sensor()
         {
@@ -93,8 +110,6 @@
         
             return view('pages/add/daftar-sensor', compact('dataFeed', 'customPaginator','sensor'));
         }
-        
-
 
         //SEARCH//
         public function search_farmer(Request $request) {
@@ -148,7 +163,7 @@
                 'alamat_user' => $request->alamat_user
                 
             ]);
-            return redirect('/pages/add/daftar-farmer')->with('pesan', 'Data farmer berhasil ditambahkan');
+            return redirect('/pages/add/daftar-farmer')->with('tambah', 'Data berhasil ditambahkan');
         }
 
         public function store_lahan(Request $request)
@@ -182,7 +197,7 @@
                 'luas_lahan' => $request->luas_lahan,
             ]);
 
-            return redirect('/pages/add/daftar-lahan')->with('pesan', 'Data lahan berhasil ditambahkan');
+            return redirect('/pages/add/daftar-lahan')->with('tambah', 'Data berhasil ditambahkan');
         }
         
 
@@ -203,7 +218,7 @@
                 'tanggal_aktivasi' => $request->tanggal_aktivasi
             ]);
 
-            return redirect('/pages/add/daftar-sensor')->with('pesan', 'Data sensor berhasil ditambahkan');
+            return redirect('/pages/add/daftar-sensor')->with('tambah', 'Data berhasil ditambahkan');
         }
 
 
@@ -228,17 +243,19 @@
             return view('pages.edit-delete.form-auth', compact('users'));        
         }
 
-        //READ//
         public function read_farmer_edit($id) {
+            $batas = 5;
             $users = User::find($id);
+            $sensor = Lahan::with('sensor')->where('id_user', $id)->paginate($batas);
+            $no=$batas*($sensor->currentPage() - 1);
 
-            $sensor = Lahan::with('sensor')->where('id_user', $id)->get();
-            // dd($sensor);
             return view('pages.edit-delete.read-farmer', compact('users', 'sensor'));
         }
+
         
         public function read_lahan_edit(string $id_lahan) {
             $lahan = Lahan::find($id_lahan);
+
             return view('pages.edit-delete.read-lahan', compact('lahan'));
         }
         public function read_sensor_edit(string $id_sensor) {
@@ -256,7 +273,7 @@
         public function read_farmer_destroy($id){
             $users = User::find($id);
             $users->delete();
-            return redirect('/pages/add/daftar-farmer');
+            return redirect('/pages/add/daftar-farmer')->with('delete', 'Sensor berhasil dihapus');
         }
 
 
@@ -269,7 +286,7 @@
         
                 DB::statement('SET FOREIGN_KEY_CHECKS=1');
         
-                return redirect('/pages/add/daftar-lahan');
+                return redirect('/pages/add/daftar-lahan')->with('delete', 'Sensor berhasil dihapus');
             } catch (\Exception $e) {
                 return redirect('/pages/add/daftar-lahan')->with('error', 'Terjadi kesalahan saat menghapus rekaman.');
             }
@@ -278,7 +295,7 @@
         public function read_sensor_destroy($id_sensor){
             $sensor = Sensor::find($id_sensor);
             $sensor->delete();
-            return redirect('/pages/add/daftar-sensor');
+            return redirect('/pages/add/daftar-sensor')->with('delete', 'Sensor berhasil dihapus');
         }
 
         public function form_farmer_update(Request $request, $id)
@@ -301,7 +318,7 @@
                 $user->alamat_user = $request->input('alamat_user');
                 $user->save();
         
-                return redirect('/pages/add/daftar-farmer')->with('success', 'Farmer updated successfully');
+                return redirect('/pages/add/daftar-farmer')->with('simpan', 'Farmer updated successfully');
             } catch (\Exception $e) {
                 \Log::error('Error in form_farmer_update: ' . $e->getMessage());
         
@@ -326,7 +343,7 @@
             $lahan->alamat_lahan = $request->input('alamat_lahan');
             $lahan->save();
 
-            return redirect('/pages/add/daftar-lahan')->with('success', 'Lahan updated successfully');
+            return redirect('/pages/add/daftar-lahan')->with('simpan', 'Lahan updated successfully');
         }
 
 
@@ -342,7 +359,7 @@
             $sensor->id_lahan = $request->input('id_lahan');
             $sensor->tanggal_aktivasi = $request->input('tanggal_aktivasi');
             $sensor->save();
-        return redirect('/pages/add/daftar-sensor')->with('success', 'Sensor updated successfully');
+        return redirect('/pages/add/daftar-sensor')->with('simpan', 'Sensor updated successfully');
         }
         
 
@@ -360,10 +377,48 @@
                 $user = User::findOrFail($id);
                 $user->name = $request->input('name');
                 $user->email = $request->input('email');
-                $user->id = $request->input('id');
                 $user->password = bcrypt($request->input('password'));
                 $user->alamat_user = $request->input('alamat_user');
                 $user->save();
+        
+                // Perbarui payload sesi
+           // ...
+
+            // Perbarui payload sesi
+            $userId = $user->id;
+            $sessions = \DB::table('sessions')->where('user_id', $userId)->get();
+
+            foreach ($sessions as $session) {
+                $payload = json_decode($session->payload, true);
+
+                // Perbarui payload sesuai dengan perubahan pada pengguna
+                $payload['id'] = $user->id;
+                $payload['name'] = $user->name;
+                $payload['email_verified_at'] = $user->email_verified_at;
+                $payload['email'] = $user->email;
+                $payload['password'] = $user->password;
+                $payload['two_factor_secret'] = $user->two_factor_secret;
+                $payload['two_factor_recovery_codes'] = $user->two_factor_recovery_codes;
+                $payload['two_factor_confirmed_at'] = $user->two_factor_confirmed_at;
+                $payload['remember_token'] = $user->remember_token;
+                $payload['current_team_id'] = $user->current_team_id;
+                $payload['profile_photo_path'] = $user->profile_photo_path;
+                $payload['created_at'] = $user->created_at;
+                $payload['updated_at'] = $user->updated_at;
+                $payload['level'] = $user->level;
+                $payload['alamat_user'] = $user->alamat_user;
+
+
+
+                // Simpan perubahan payload kembali ke sesi
+                \DB::table('sessions')
+                    ->where('id', $session->id)
+                    ->update(['payload' => json_encode($payload)]);
+            }
+
+            // ...
+            Session::regenerate();
+
         
                 return redirect('/pages/add/daftar-farmer')->with('success', 'Farmer updated successfully');
             } catch (\Exception $e) {
@@ -372,4 +427,5 @@
                 return back()->with('error', 'Error updating farmer');
             }
         }
+
 }
