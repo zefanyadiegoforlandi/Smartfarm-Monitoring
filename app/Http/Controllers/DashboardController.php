@@ -47,6 +47,9 @@
             return view('pages/dashboard/dashboard', compact('dataFeed','users', 'sensor','lahan','jumlah_users', 'jumlah_lahan', 'jumlah_sensor'));
         }
 
+
+
+
         //DAFTAR TABLE
         public function daftar_lahan()
         {
@@ -111,6 +114,9 @@
             return view('pages/add/daftar-sensor', compact('dataFeed', 'customPaginator','sensor'));
         }
 
+
+
+
         //SEARCH//
         public function search_farmer(Request $request) {
             $batas = 5;
@@ -153,7 +159,13 @@
                 'email' => 'required|email|unique:users,email',
                 'password' => 'required|min:8',
                 'alamat_user' => 'required'
+            ], [
+                'name.required' => 'Nama wajib diisi!',
+                'email.required' => 'Email wajib diisi!',
+                'password.required' => 'Password wajib diisi!',
+                'alamat_lahan.required' => 'Alamat lahan wajib diisi',
             ]);
+
             $batas = 15;
             $user= User::orderBy('id', 'desc')->paginate($batas);
             User::create([
@@ -163,6 +175,8 @@
                 'alamat_user' => $request->alamat_user
                 
             ]);
+
+
             return redirect('/pages/add/daftar-farmer')->with('tambah', 'Data berhasil ditambahkan');
         }
 
@@ -325,7 +339,6 @@
                 return back()->with('error', 'Error updating farmer');
             }
         }
-        
 
         public function form_lahan_update(Request $request, $id_lahan)
         {
@@ -346,7 +359,6 @@
             return redirect('/pages/add/daftar-lahan')->with('simpan', 'Lahan updated successfully');
         }
 
-
         public function form_sensor_update(Request $request, $id_sensor)
         {
             $request->validate([
@@ -360,72 +372,6 @@
             $sensor->tanggal_aktivasi = $request->input('tanggal_aktivasi');
             $sensor->save();
         return redirect('/pages/add/daftar-sensor')->with('simpan', 'Sensor updated successfully');
-        }
-        
-
-        public function form_auth_update(Request $request, $id)
-        {
-            // Validasi form
-            $request->validate([
-                'name' => 'required',
-                'email' => 'required|email|unique:users,email,' . $id,
-                'password' => 'required|min:8',
-                'id' => 'required',
-            ]);
-        
-            try {
-                $user = User::findOrFail($id);
-                $user->name = $request->input('name');
-                $user->email = $request->input('email');
-                $user->password = bcrypt($request->input('password'));
-                $user->alamat_user = $request->input('alamat_user');
-                $user->save();
-        
-                // Perbarui payload sesi
-           // ...
-
-            // Perbarui payload sesi
-            $userId = $user->id;
-            $sessions = \DB::table('sessions')->where('user_id', $userId)->get();
-
-            foreach ($sessions as $session) {
-                $payload = json_decode($session->payload, true);
-
-                // Perbarui payload sesuai dengan perubahan pada pengguna
-                $payload['id'] = $user->id;
-                $payload['name'] = $user->name;
-                $payload['email_verified_at'] = $user->email_verified_at;
-                $payload['email'] = $user->email;
-                $payload['password'] = $user->password;
-                $payload['two_factor_secret'] = $user->two_factor_secret;
-                $payload['two_factor_recovery_codes'] = $user->two_factor_recovery_codes;
-                $payload['two_factor_confirmed_at'] = $user->two_factor_confirmed_at;
-                $payload['remember_token'] = $user->remember_token;
-                $payload['current_team_id'] = $user->current_team_id;
-                $payload['profile_photo_path'] = $user->profile_photo_path;
-                $payload['created_at'] = $user->created_at;
-                $payload['updated_at'] = $user->updated_at;
-                $payload['level'] = $user->level;
-                $payload['alamat_user'] = $user->alamat_user;
-
-
-
-                // Simpan perubahan payload kembali ke sesi
-                \DB::table('sessions')
-                    ->where('id', $session->id)
-                    ->update(['payload' => json_encode($payload)]);
-            }
-
-            // ...
-            Session::regenerate();
-
-        
-                return redirect('/pages/add/daftar-farmer')->with('success', 'Farmer updated successfully');
-            } catch (\Exception $e) {
-                \Log::error('Error in form_auth_update: ' . $e->getMessage());
-        
-                return back()->with('error', 'Error updating farmer');
-            }
         }
 
 }

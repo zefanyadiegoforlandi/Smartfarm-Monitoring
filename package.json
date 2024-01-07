@@ -17,7 +17,7 @@
         "vite": "^4.3.9"
     },
     "dependencies": {
-        "chart.js": "^4.3.0",
+        "chart.js": "^4.4.1",
         "chartjs-adapter-moment": "^1.0.1",
         "flatpickr": "^4.6.13",
         "moment": "^2.29.4",

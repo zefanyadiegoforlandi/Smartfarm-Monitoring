@@ -12,6 +12,7 @@ class DataSensor extends Model
     protected $table = 'data_sensor';
 
     protected $fillable = [
+        'id_sensor',
         'intensitas_cahaya',
         'kelembaban_tanah',
         'kualitas_udara',
@@ -22,4 +23,9 @@ class DataSensor extends Model
         'ketinggian',
         'waktu_perekaman',
     ];
+
+    public function sensor()
+    {
+        return $this->belongsTo(Sensor::class, 'id_sensor');
+    }
 }

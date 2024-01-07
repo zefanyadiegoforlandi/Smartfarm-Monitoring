@@ -36,38 +36,37 @@
             <div class="p-5">
                 <canvas id="chartjs-7" class="chartjs" width="undefined" height="undefined"></canvas>
                 <script>
-                    new Chart(document.getElementById("chartjs-7"), {
-                        "type": "bar",
-                        "data": {
-                            "labels": ["January", "February", "March", "April"],
-                            "datasets": [{
-                                "label": "Page Impressions",
-                                "data": [10, 20, 30, 40],
-                                "borderColor": "rgb(255, 99, 132)",
-                                "backgroundColor": "rgba(255, 99, 132, 0.2)"
-                            }, {
-                                "label": "Adsense Clicks",
-                                "data": [5, 15, 10, 30],
-                                "type": "line",
-                                "fill": false,
-                                "borderColor": "rgb(54, 162, 235)"
-                            }]
+                    const tableData = <?php echo json_encode($dataSensor); ?>;
+    
+                    const labels = tableData.map(entry => entry.waktu_perekaman);
+                    const suhu = tableData.map(entry => entry.curah_hujan);
+    
+                    const chart = new Chart(document.getElementById("chartjs-7"), {
+                        type: "line",
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: "Suhu Real-Time",
+                                data: suhu,
+                                borderColor: "rgb(255, 99, 132)",
+                                backgroundColor: "rgba(255, 99, 132, 0.2)"
+                            }],
                         },
-                        "options": {
-                            "scales": {
-                                "yAxes": [{
-                                    "ticks": {
-                                        "beginAtZero": true
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
                                     }
                                 }]
                             }
                         }
                     });
+    
                 </script>
             </div>
         </div>
-        <!--/Graph Card-->
-    </div>
+     </div>
 
     <!-- Table for time and date -->
     <table class="w-full  mt-5">
@@ -81,62 +80,14 @@
             </tr>
         </thead>
         <tbody>
+            @foreach ($dataSensor as $c_hujan1)
             <tr class="text-center">
-                <td class=" p-2">08:00 AM</td>
-                <td class=" p-2">2023-12-07</td>
-                <!-- Add sample data for Sensor ID and Temperature -->
-                <td class="hidden md:table-cell  p-2">1</td>
-                <td class="hidden md:table-cell  p-2">25°C</td>
+                <td class="p-2">{{ \Carbon\Carbon::parse($c_hujan1->waktu_perekaman)->format('H:i:s') }}</td>
+                <td class="p-2">{{ \Carbon\Carbon::parse($c_hujan1->waktu_perekaman)->format('Y-m-d') }}</td>
+                <td class="p-2">L007</td>
+                <td class=" p-2">{{ $c_hujan1->curah_hujan }} mm</td>
             </tr>
-            <tr class="text-center">
-                <td class=" p-2">08:00 AM</td>
-                <td class=" p-2">2023-12-07</td>
-                <!-- Add sample data for Sensor ID and Temperature -->
-                <td class="hidden md:table-cell  p-2">1</td>
-                <td class="hidden md:table-cell  p-2">25°C</td>
-            </tr>
-            <tr class="text-center">
-                <td class=" p-2">08:00 AM</td>
-                <td class=" p-2">2023-12-07</td>
-                <!-- Add sample data for Sensor ID and Temperature -->
-                <td class="hidden md:table-cell  p-2">1</td>
-                <td class="hidden md:table-cell  p-2">25°C</td>
-            </tr>
-            <tr class="text-center">
-                <td class=" p-2">08:00 AM</td>
-                <td class=" p-2">2023-12-07</td>
-                <!-- Add sample data for Sensor ID and Temperature -->
-                <td class="hidden md:table-cell  p-2">1</td>
-                <td class="hidden md:table-cell  p-2">25°C</td>
-            </tr>
-            <tr class="text-center">
-                <td class=" p-2">08:00 AM</td>
-                <td class=" p-2">2023-12-07</td>
-                <!-- Add sample data for Sensor ID and Temperature -->
-                <td class="hidden md:table-cell  p-2">1</td>
-                <td class="hidden md:table-cell  p-2">25°C</td>
-            </tr>
-            <tr class="text-center">
-                <td class=" p-2">08:00 AM</td>
-                <td class=" p-2">2023-12-07</td>
-                <!-- Add sample data for Sensor ID and Temperature -->
-                <td class="hidden md:table-cell  p-2">1</td>
-                <td class="hidden md:table-cell  p-2">25°C</td>
-            </tr>
-            <tr class="text-center">
-                <td class=" p-2">08:00 AM</td>
-                <td class=" p-2">2023-12-07</td>
-                <!-- Add sample data for Sensor ID and Temperature -->
-                <td class="hidden md:table-cell  p-2">1</td>
-                <td class="hidden md:table-cell  p-2">25°C</td>
-            </tr>
-            <tr class="text-center">
-                <td class=" p-2">08:00 AM</td>
-                <td class=" p-2">2023-12-07</td>
-                <!-- Add sample data for Sensor ID and Temperature -->
-                <td class="hidden md:table-cell  p-2">1</td>
-                <td class="hidden md:table-cell  p-2">25°C</td>
-            </tr>
+            @endforeach
 
         </tbody>
     </table>

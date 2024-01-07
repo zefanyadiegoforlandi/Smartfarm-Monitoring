@@ -69,7 +69,7 @@ Route::put('/pages/edit-delete/form-sensor/{id}', [DashboardController::class, '
 //Edit-Delete Auth//
 Route::get('/pages/edit-delete/read-auth/{id}', [DashboardController::class, 'read_auth_edit'])->name('read-auth.edit');
 Route::get('/pages/edit-delete/form-auth/{id}', [DashboardController::class, 'form_auth_edit'])->name('form-auth.edit');
-Route::put('/pages/edit-delete/form-auth/{id}', [DashboardController::class, 'form_auth_update'])->name('form-auth.update');
+Route::put('/pages/edit-delete/form-auth/{id}', [UserController::class, 'form_auth_update'])->name('form-auth.update');
 
 Route::get('redirects', [UserController::class, 'index']);
 

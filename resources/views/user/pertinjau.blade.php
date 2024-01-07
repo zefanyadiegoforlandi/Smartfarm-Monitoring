@@ -42,7 +42,7 @@
                     <p class="font-medium md:text-xl md:mb-6 text-center">Suhu saat ini</p>
                 </div>
                 <div class="flex items-center justify-end md:justify-center bg-white md:rounded-xl md:w-[108px] md:h-[52px]">
-                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">27*</p>
+                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">{{ $suhuTerakhir->suhu }}°C</p>
                 </div>
             </div>
 
@@ -51,7 +51,7 @@
                     <p class="font-medium md:text-xl md:mb-6 text-center">Suhu Terendah</p>
                 </div>
                 <div class="flex items-center justify-end md:justify-center bg-white md:rounded-xl md:w-[108px] md:h-[52px]">
-                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">27*</p>
+                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">{{ $suhuTerendah }}°C</p>
                 </div>
             </div>
 
@@ -60,7 +60,7 @@
                     <p class="font-medium md:text-xl md:mb-6 text-center">Suhu Tertinggi</p>
                 </div>
                 <div class="flex items-center justify-end md:justify-center bg-white md:rounded-xl md:w-[108px] md:h-[52px]">
-                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">27*</p>
+                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">{{ $suhuTertinggi }}°C</p>
                 </div>
             </div>
 
@@ -69,7 +69,7 @@
                     <p class="font-medium md:text-xl md:mb-6 text-center">Rata-rata Suhu</p>
                 </div>
                 <div class="flex items-center justify-end md:justify-center bg-white md:rounded-xl md:w-[108px] md:h-[52px]">
-                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">27*</p>
+                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">{{ $rataRataSuhu }}°C</p>
                 </div>
             </div>
         </div>
@@ -89,7 +89,7 @@
                     <p class="font-medium md:text-xl md:mb-6 text-center">Kelembapan saat ini</p>
                 </div>
                 <div class="flex items-center justify-end md:justify-center bg-white md:rounded-xl md:w-[108px] md:h-[52px]">
-                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">27*</p>
+                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">{{ $kelembabanUdaraTerakhir->kelembaban_udara }}%</p>
                 </div>
             </div>
 
@@ -98,7 +98,7 @@
                     <p class="font-medium md:text-xl md:mb-6 text-center">Kelembapan Terendah</p>
                 </div>
                 <div class="flex items-center justify-end md:justify-center bg-white md:rounded-xl md:w-[108px] md:h-[52px]">
-                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">27*</p>
+                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">{{ $kelembabanUdaraTerendah }}%</p>
                 </div>
             </div>
 
@@ -107,7 +107,7 @@
                     <p class="font-medium md:text-xl md:mb-6 text-center">Kelembapan  Tertinggi</p>
                 </div>
                 <div class="flex items-center justify-end md:justify-center bg-white md:rounded-xl md:w-[108px] md:h-[52px]">
-                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">27*</p>
+                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">{{ $kelembabanUdaraTertinggi }}%</p>
                 </div>
             </div>
 
@@ -116,7 +116,7 @@
                     <p class="font-medium md:text-xl md:mb-6 text-center">Rata-rata Kelembapan</p>
                 </div>
                 <div class="flex items-center justify-end md:justify-center bg-white md:rounded-xl md:w-[108px] md:h-[52px]">
-                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">27*</p>
+                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">{{ $rataRataKelembabanUdara }}%</p>
                 </div>
             </div>
         </div>
@@ -143,7 +143,7 @@
                     <p class="font-medium md:text-xl md:mb-6 text-center lg:w-36">Curah Hujan saat ini</p>
                 </div>
                 <div class="flex items-center justify-end md:justify-center bg-white md:rounded-xl md:w-[108px] md:h-[52px]">
-                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">27*</p>
+                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">{{ $curahHujanTerakhir->curah_hujan }}mm</p>
                 </div>
             </div>
 
@@ -152,7 +152,7 @@
                     <p class="font-medium md:text-xl md:mb-6 text-center lg:w-36">Curah Hujan Terendah</p>
                 </div>
                 <div class="flex items-center justify-end md:justify-center bg-white md:rounded-xl md:w-[108px] md:h-[52px]">
-                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">27*</p>
+                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">{{ $curahHujanTerendah }}mm</p>
                 </div>
             </div>
 
@@ -161,7 +161,7 @@
                     <p class="font-medium md:text-xl md:mb-6 text-center lg:w-36">Curah Hujan Tertinggi</p>
                 </div>
                 <div class="flex items-center justify-end md:justify-center bg-white md:rounded-xl md:w-[108px] md:h-[52px]">
-                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">27*</p>
+                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">{{ $curahHujanTertinggi }}mm</p>
                 </div>
             </div>
 
@@ -170,7 +170,7 @@
                     <p class="font-medium md:text-xl md:mb-6 text-center lg:w-36">Rata-rata Curah Hujan</p>
                 </div>
                 <div class="flex items-center justify-end md:justify-center bg-white md:rounded-xl md:w-[108px] md:h-[52px]">
-                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">27*</p>
+                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">{{ $rataRataCurahHujan }}mm</p>
                 </div>
             </div>
         </div>
@@ -190,7 +190,7 @@
                     <p class="font-medium md:text-xl md:mb-6 text-center lg:w-36">Intensitas Cahaya saat ini</p>
                 </div>
                 <div class="flex items-center justify-end md:justify-center bg-white md:rounded-xl md:w-[108px] md:h-[52px]">
-                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">27*</p>
+                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">{{ $intensitasCahayaTerakhir->intensitas_cahaya }} Cd</p>
                 </div>
             </div>
 
@@ -199,7 +199,7 @@
                     <p class="font-medium md:text-xl md:mb-6 text-center lg:w-36">Intensitas Cahaya Terendah</p>
                 </div>
                 <div class="flex items-center justify-end md:justify-center bg-white md:rounded-xl md:w-[108px] md:h-[52px]">
-                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">27*</p>
+                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">{{ $intensitasCahayaTerendah }} Cd</p>
                 </div>
             </div>
 
@@ -208,7 +208,7 @@
                     <p class="font-medium md:text-xl md:mb-6 text-center lg:w-36">Intensitas Cahaya Tertinggi</p>
                 </div>
                 <div class="flex items-center justify-end md:justify-center bg-white md:rounded-xl md:w-[108px] md:h-[52px]">
-                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">27*</p>
+                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">{{ $intensitasCahayaTertinggi }} Cd</p>
                 </div>
             </div>
 
@@ -217,7 +217,7 @@
                     <p class="font-medium md:text-xl md:mb-6 text-center lg:w-36">Rata-rata Intensitas Cahaya</p>
                 </div>
                 <div class="flex items-center justify-end md:justify-center bg-white md:rounded-xl md:w-[108px] md:h-[52px]">
-                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">27*</p>
+                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">{{ $rataRataIntensitasCahaya }} Cd</p>
                 </div>
             </div>
         </div>
@@ -237,7 +237,7 @@
                     <p class="font-medium md:text-xl md:mb-6 text-center lg:w-36">Kualitas Udara saat ini</p>
                 </div>
                 <div class="flex items-center justify-end md:justify-center bg-white md:rounded-xl md:w-[108px] md:h-[52px]">
-                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">27*</p>
+                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">{{ $kualitasUdaraTerakhir->kualitas_udara }} PPM</p>
                 </div>
             </div>
 
@@ -246,7 +246,7 @@
                     <p class="font-medium md:text-xl md:mb-6 text-center lg:w-36">Kualitas Udara Terendah</p>
                 </div>
                 <div class="flex items-center justify-end md:justify-center bg-white md:rounded-xl md:w-[108px] md:h-[52px]">
-                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">27*</p>
+                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">{{ $kualitasUdaraTerendah }} PPM</p>
                 </div>
             </div>
 
@@ -255,7 +255,7 @@
                     <p class="font-medium md:text-xl md:mb-6 text-center lg:w-36">Kualitas Udara Tertinggi</p>
                 </div>
                 <div class="flex items-center justify-end md:justify-center bg-white md:rounded-xl md:w-[108px] md:h-[52px]">
-                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">27*</p>
+                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">{{ $kualitasUdaraTertinggi }} PPM</p>
                 </div>
             </div>
 
@@ -264,7 +264,7 @@
                     <p class="font-medium md:text-xl md:mb-6 text-center lg:w-36">Rata-rata Kualitas Udara</p>
                 </div>
                 <div class="flex items-center justify-end md:justify-center bg-white md:rounded-xl md:w-[108px] md:h-[52px]">
-                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">27*</p>
+                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">{{ $rataRataKualitasUdara }} PPM</p>
                 </div>
             </div>
         </div>
@@ -293,7 +293,7 @@
                     <p class="font-medium md:text-xl md:mb-6 text-center lg:w-36">Kelembapan  Tanah saat ini</p>
                 </div>
                 <div class="flex items-center justify-end md:justify-center bg-white md:rounded-xl md:w-[108px] md:h-[52px]">
-                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">27*</p>
+                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">{{ $kelembabanTanahTerakhir->kelembaban_tanah }}%</p>
                 </div>
             </div>
 
@@ -302,7 +302,7 @@
                     <p class="font-medium md:text-xl md:mb-6 text-center lg:w-36">Kelembapan  Tanah Terendah</p>
                 </div>
                 <div class="flex items-center justify-end md:justify-center bg-white md:rounded-xl md:w-[108px] md:h-[52px]">
-                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">27*</p>
+                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">{{ $kelembabanTanahTerendah }}%</p>
                 </div>
             </div>
 
@@ -311,7 +311,7 @@
                     <p class="font-medium md:text-xl md:mb-6 text-center lg:w-36">Kelembapan  Tanah Tertinggi</p>
                 </div>
                 <div class="flex items-center justify-end md:justify-center bg-white md:rounded-xl md:w-[108px] md:h-[52px]">
-                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">27*</p>
+                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">{{ $kelembabanTanahTertinggi }}%</p>
                 </div>
             </div>
 
@@ -320,7 +320,7 @@
                     <p class="font-medium md:text-xl md:mb-6 text-center lg:w-36">Rata-rata  Kelembapan Tanah</p>
                 </div>
                 <div class="flex items-center justify-end md:justify-center bg-white md:rounded-xl md:w-[108px] md:h-[52px]">
-                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">27*</p>
+                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">{{ $rataRataKelembabanTanah }}%</p>
                 </div>
             </div>
         </div>
@@ -337,37 +337,37 @@
         <div class="flex-col flex-1 md:flex md:flex-row justify-between lg:px-11">
             <div class="flex items-center justify-between md:flex-col">
                 <div class="flex items-center justify-start">
-                    <p class="font-medium md:text-xl md:mb-6 text-center lg:w-36">Keinggian saat ini</p>
+                    <p class="font-medium md:text-xl md:mb-6 text-center lg:w-36">Ketinggian saat ini</p>
                 </div>
                 <div class="flex items-center justify-end md:justify-center bg-white md:rounded-xl md:w-[108px] md:h-[52px]">
-                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">27*</p>
+                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">{{ $ketinggianTerakhir->ketinggian }} m</p>
                 </div>
             </div>
 
             <div class="flex items-center justify-between md:flex-col">
                 <div class="flex items-center justify-start">
-                    <p class="font-medium md:text-xl md:mb-6 text-center lg:w-36">Keinggian Terendah</p>
+                    <p class="font-medium md:text-xl md:mb-6 text-center lg:w-36">Ketinggian Terendah</p>
                 </div>
                 <div class="flex items-center justify-end md:justify-center bg-white md:rounded-xl md:w-[108px] md:h-[52px]">
-                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">27*</p>
+                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">{{ $ketinggianTerendah }} m</p>
                 </div>
             </div>
 
             <div class="flex items-center justify-between md:flex-col">
                 <div class="flex items-center justify-start">
-                    <p class="font-medium md:text-xl md:mb-6 text-center lg:w-36">Keinggian Tertinggi</p>
+                    <p class="font-medium md:text-xl md:mb-6 text-center lg:w-36">Ketinggian Tertinggi</p>
                 </div>
                 <div class="flex items-center justify-end md:justify-center bg-white md:rounded-xl md:w-[108px] md:h-[52px]">
-                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">27*</p>
+                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">{{ $ketinggianTertinggi }} m</p>
                 </div>
             </div>
 
             <div class="flex items-center justify-between md:flex-col">
                 <div class="flex items-center justify-start">
-                    <p class="font-medium md:text-xl md:mb-6 text-center lg:w-36">Rata-rata Keinggian</p>
+                    <p class="font-medium md:text-xl md:mb-6 text-center lg:w-36">Rata-rata Ketinggian</p>
                 </div>
                 <div class="flex items-center justify-end md:justify-center bg-white md:rounded-xl md:w-[108px] md:h-[52px]">
-                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">27*</p>
+                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">{{ $rataRataKetinggian }} m</p>
                 </div>
             </div>
         </div>
@@ -389,7 +389,7 @@
                     <p class="font-medium md:text-xl md:mb-6 text-center lg:w-36">Tekanan Udara saat ini</p>
                 </div>
                 <div class="flex items-center justify-end md:justify-center bg-white md:rounded-xl md:w-[108px] md:h-[52px]">
-                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">27*</p>
+                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">{{ $tekananUdaraTerakhir->tekanan }} hPa</p>
                 </div>
             </div>
 
@@ -398,7 +398,7 @@
                     <p class="font-medium md:text-xl md:mb-6 text-center lg:w-36">Tekanan Udara Terendah</p>
                 </div>
                 <div class="flex items-center justify-end md:justify-center bg-white md:rounded-xl md:w-[108px] md:h-[52px]">
-                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">27*</p>
+                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">{{ $tekananUdaraTerendah }} hPa</p>
                 </div>
             </div>
 
@@ -407,7 +407,7 @@
                     <p class="font-medium md:text-xl md:mb-6 text-center lg:w-36">Tekanan Udara Tertinggi</p>
                 </div>
                 <div class="flex items-center justify-end md:justify-center bg-white md:rounded-xl md:w-[108px] md:h-[52px]">
-                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">27*</p>
+                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">{{ $tekananUdaraTertinggi }} hPa</p>
                 </div>
             </div>
 
@@ -416,7 +416,7 @@
                     <p class="font-medium md:text-xl md:mb-6 text-center lg:w-36">Rata-rata Tekanan Udara</p>
                 </div>
                 <div class="flex items-center justify-end md:justify-center bg-white md:rounded-xl md:w-[108px] md:h-[52px]">
-                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">27*</p>
+                    <p class="font-medium text-[13px] md:text-[22px] text-[#416D14] text-center">{{ $rataRataTekananUdara }} hPa</p>
                 </div>
             </div>
         </div>

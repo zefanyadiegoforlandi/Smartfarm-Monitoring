@@ -228,6 +228,19 @@
         });
     </script>
 
+    @if(session('errors'))
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: "{{ $errors->first() }}", // Mengambil pesan kesalahan pertama dari laravel
+            });
+        });
+    </script>
+    @endif
+
 
 
 

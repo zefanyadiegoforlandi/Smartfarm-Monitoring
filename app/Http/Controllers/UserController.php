@@ -12,6 +12,7 @@ use App\Models\Users;
 use App\Models\Sensor;
 use App\Models\Lahan;
 use App\Models\User;
+use App\Models\DataSensor;
 use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
@@ -43,4 +44,42 @@ class UserController extends Controller
             return view('/user/user-dashboard');
         }
     }
+
+    public function form_auth_update(Request $request, $id)
+    {
+        // Validasi form
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,' . $id,
+            'password' => 'required|min:8',
+            'id' => 'required',
+        ]);
+
+        try {
+            // Ambil data pengguna
+            $user = User::findOrFail($id);
+
+            // Perbarui data pengguna
+            $user->update([
+                'name' => $request->input('name'),
+                'email' => $request->input('email'),
+                'password' => bcrypt($request->input('password')),
+                'alamat_user' => $request->input('alamat_user'),
+            ]);
+
+            // Perbarui data sesi
+            session(['user' => $user->toArray()]);
+
+            // Regenerasi sesi
+            Session::regenerate();
+
+            return redirect('/pages/add/daftar-farmer')->with('success', 'Farmer updated successfully');
+        } catch (\Exception $e) {
+            \Log::error('Error in form_auth_update: ' . $e->getMessage());
+
+            return back()->with('error', 'Error updating farmer');
+        }
+    }
 }
+
+

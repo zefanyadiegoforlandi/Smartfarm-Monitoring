@@ -23,4 +23,10 @@ class Sensor extends Model
     public function lahan() {
         return $this->belongsTo(Lahan::class, 'id_lahan');
     }    
+
+    public function dataSensor()
+{
+    return $this->hasMany(DataSensor::class, 'id_sensor');
+}
+
 }

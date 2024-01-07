@@ -2,33 +2,34 @@
 
 @section('content')
 <div class="min-w-full px-4 mb-5">
+    
     <span class="toggle-button text-white text-4xl top-5 left-4 cursor-pointer xl:hidden">
         <img src="{{ asset('images/tonggle_sidebar.svg') }}">
     </span>
 
     <div class="items-center justify-between mt-5 flex">
         <div class="flex items-center justify-start">
-            <p class="font-semibold text-3xl md:text-[40px] text-[#416D14]">Sensor</p>
+            <p class="font-semibold text-3xl md:text-[40px] text-[#416D14]">Suhu</p>
         </div>
-        <div class="flex items-center justify-end">
-            <div class="relative w-[97px] md:w-[124px] h-[27px] ">
-                <select id="filter" name="filter" class="block appearance-none w-full bg-[#416D14] border border-gray-300 text-white py-1 px-1 rounded-lg leading-tight focus:outline-none focus:border-blue-500 text-center text-xs font-semibold ">
-                    <option value="L001">L001</option>
-                    <option value="L002">L002</option>
-                    <option value="L003">L003</option>
-                    <option value="L004">L004</option>
-                </select>
-                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white">
-                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                        <path d="M5 8l5 5 5-5z" />
-                    </svg>
-                </div>
+       <!-- ... -->
+        <div class="relative w-[97px] md:w-[124px] h-[27px] ">
+            <select id="filter" name="filter"
+                class="block appearance-none w-full bg-[#416D14] border border-gray-300 text-white py-1 px-1 rounded-lg leading-tight focus:outline-none focus:border-blue-500 text-center text-xs font-semibold ">
+                @foreach ($dataLahan as $lahan)
+                    <option value="{{ $lahan->id_lahan }}">{{ $lahan->id_lahan }}</option>
+                @endforeach
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white">
+                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                    <path d="M5 8l5 5 5-5z" />
+                </svg>
             </div>
         </div>
+        <!-- ... -->
     </div>
 
-    <div class="w-full mt-7 ">
-        <!--Graph Card-->
+    <div class="w-full mt-7" id="data-container">
+        <!-- Kartu Grafik -->
         <div class="bg-white border-transparent rounded-lg shadow-xl">
             <div class="bg-[#ECF0E8] rounded-tl-lg rounded-tr-lg p-2">
                 <h class="font-bold p-4">Suhu</h>
@@ -36,111 +37,79 @@
             <div class="p-5">
                 <canvas id="chartjs-7" class="chartjs" width="undefined" height="undefined"></canvas>
                 <script>
-                    new Chart(document.getElementById("chartjs-7"), {
-                        "type": "bar",
-                        "data": {
-                            "labels": ["January", "February", "March", "April"],
-                            "datasets": [{
-                                "label": "Page Impressions",
-                                "data": [10, 20, 30, 40],
-                                "borderColor": "rgb(255, 99, 132)",
-                                "backgroundColor": "rgba(255, 99, 132, 0.2)"
-                            }, {
-                                "label": "Adsense Clicks",
-                                "data": [5, 15, 10, 30],
-                                "type": "line",
-                                "fill": false,
-                                "borderColor": "rgb(54, 162, 235)"
-                            }]
-                        },
-                        "options": {
-                            "scales": {
-                                "yAxes": [{
-                                    "ticks": {
-                                        "beginAtZero": true
-                                    }
-                                }]
-                            }
+                    const dataTabel = <?php echo json_encode($dataSensor); ?>;
+                    const sortedData = dataTabel.sort((a, b) => new Date(b.waktu_perekaman) - new Date(a.waktu_perekaman));
+
+                    const slicedData = sortedData.slice(0, 10).reverse(); 
+                    
+                    const label = slicedData.map(entry => entry.waktu_perekaman);
+                    
+                    const suhu = slicedData.map(entry => {
+                        if (entry.suhu < 20) {
+                            return 20;
+                        } else if (entry.suhu > 35) {
+                            return 35;
+                        } else {
+                            return entry.suhu;
                         }
                     });
+                    
+                    const grafik = new Chart(document.getElementById("chartjs-7"), {
+                        type: "line",
+                        data: {
+                            labels: label.map(time => time.split(' ')[1]),
+                            datasets: [{
+                                label: "Suhu Real-Time",
+                                data: suhu,
+                                borderColor: "rgb(65,109,20)",
+                                backgroundColor: "rgb(236, 240, 232)"
+                            }],
+                        },
+                
+                        options: {
+                            scales: {
+                                x: [{
+                                        type: 'linear', // Jika ini tidak berfungsi, sesuaikan dengan 'category'
+                                        position: 'bottom',
+                                    }],
+                                y: {
+                                    min: 20,
+                                    max: 35,
+                                }
+                            }
+                        },
+                    });
                 </script>
+                
             </div>
-        </div>
-        <!--/Graph Card-->
+        </div>            
     </div>
 
-    <!-- Table for time and date -->
-    <table class="w-full  mt-5">
-        <thead class="bg-[#ECF0E8]">
-            <tr>
-                <th class=" p-2">Time</th>
-                <th class=" p-2">Date</th>
-                <!-- Add Sensor ID and Temperature columns for medium screens and larger -->
-                <th class="hidden md:table-cell  p-2">Sensor ID</th>
-                <th class="hidden md:table-cell  p-2">Temperature</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="text-center">
-                <td class=" p-2">08:00 AM</td>
-                <td class=" p-2">2023-12-07</td>
-                <!-- Add sample data for Sensor ID and Temperature -->
-                <td class="hidden md:table-cell  p-2">1</td>
-                <td class="hidden md:table-cell  p-2">25°C</td>
-            </tr>
-            <tr class="text-center">
-                <td class=" p-2">08:00 AM</td>
-                <td class=" p-2">2023-12-07</td>
-                <!-- Add sample data for Sensor ID and Temperature -->
-                <td class="hidden md:table-cell  p-2">1</td>
-                <td class="hidden md:table-cell  p-2">25°C</td>
-            </tr>
-            <tr class="text-center">
-                <td class=" p-2">08:00 AM</td>
-                <td class=" p-2">2023-12-07</td>
-                <!-- Add sample data for Sensor ID and Temperature -->
-                <td class="hidden md:table-cell  p-2">1</td>
-                <td class="hidden md:table-cell  p-2">25°C</td>
-            </tr>
-            <tr class="text-center">
-                <td class=" p-2">08:00 AM</td>
-                <td class=" p-2">2023-12-07</td>
-                <!-- Add sample data for Sensor ID and Temperature -->
-                <td class="hidden md:table-cell  p-2">1</td>
-                <td class="hidden md:table-cell  p-2">25°C</td>
-            </tr>
-            <tr class="text-center">
-                <td class=" p-2">08:00 AM</td>
-                <td class=" p-2">2023-12-07</td>
-                <!-- Add sample data for Sensor ID and Temperature -->
-                <td class="hidden md:table-cell  p-2">1</td>
-                <td class="hidden md:table-cell  p-2">25°C</td>
-            </tr>
-            <tr class="text-center">
-                <td class=" p-2">08:00 AM</td>
-                <td class=" p-2">2023-12-07</td>
-                <!-- Add sample data for Sensor ID and Temperature -->
-                <td class="hidden md:table-cell  p-2">1</td>
-                <td class="hidden md:table-cell  p-2">25°C</td>
-            </tr>
-            <tr class="text-center">
-                <td class=" p-2">08:00 AM</td>
-                <td class=" p-2">2023-12-07</td>
-                <!-- Add sample data for Sensor ID and Temperature -->
-                <td class="hidden md:table-cell  p-2">1</td>
-                <td class="hidden md:table-cell  p-2">25°C</td>
-            </tr>
-            <tr class="text-center">
-                <td class=" p-2">08:00 AM</td>
-                <td class=" p-2">2023-12-07</td>
-                <!-- Add sample data for Sensor ID and Temperature -->
-                <td class="hidden md:table-cell  p-2">1</td>
-                <td class="hidden md:table-cell  p-2">25°C</td>
-            </tr>
+    <div id="data-container">
+        <table class="w-full  mt-5">
+            <thead class="bg-[#ECF0E8]">
+                <tr>
+                    <th class=" p-2">Time</th>
+                    <th class=" p-2">Date</th>
+                    <th class=" p-2">Sensor ID</th>
+                    <th class=" p-2">Temperature</th>
+                </tr>
+            </thead>
+            
+            <tbody>
+                @foreach ($dataSensor as $suhu1)
+                    <tr class="text-center">
+                        <td class="p-2">{{ \Carbon\Carbon::parse($suhu1->waktu_perekaman)->format('H:i:s') }}</td>
+                        <td class="p-2">{{ \Carbon\Carbon::parse($suhu1->waktu_perekaman)->format('Y-m-d') }}</td>
+                        <td class="p-2">{{ $suhu1->id_sensor }}</td> <!-- Menampilkan kode lahan -->
+                        <td class="p-2">{{ $suhu1->suhu }} C</td>
+                    </tr>
+                @endforeach
+            </tbody>
 
-        </tbody>
-    </table>
-    <!-- /Table for time and date -->
+        </table>
+        <!-- /Table for time and date -->
+    </div>
 
     <!-- Pagination -->
     <div class="flex justify-center mt-5">
@@ -165,5 +134,8 @@
     </div>
     <!-- /Pagination -->
 </div>
+
+
+
 
 @endsection
