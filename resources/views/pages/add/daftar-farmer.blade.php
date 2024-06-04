@@ -24,7 +24,7 @@
                 </div>
                 <div class="flex items-center">
 
-                    <button id="openModal" class="btn mx-5" style="background-color: #416D14; color: white; transition: 
+                    <button id="openModal" class="btn mx-5 bg-[#416D14]" style="color: white; transition: 
                         background-color 0.3s ease, color 0.3s ease; border: none; padding: 10px 20px; cursor: pointer;" onmouseover="this.style.backgroundColor='#274706'; this.style.color='white';" onmouseout="this.style.backgroundColor='#416D14'; this.style.color='white';">
                         <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
                             <path d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
@@ -51,18 +51,28 @@
                 <table style="width: 100%;">
                     <thead style="height: 53px; background-color:#ECF0E8; color:#416D14">
                         <tr>
+                            <th class="py-2 px-4 border-b">ID</th>
                             <th class="py-2 px-4 border-b">NAME</th>
                             <th class="py-2 px-4 border-b">EMAIL</th>
-                            <th class="py-2 px-4 border-b">ALAMAT</th>
+                            <th class="py-2 px-4 border-b">ALAMAT FARMER</th>
                             <th class="py-2 px-4 border-b">JUMLAH SENSOR</th>
+                            
                         </tr>
                     </thead>
 
-                    @foreach($users as $u)
-                    @if($u->level == 'user') 
-                        <tr>
+                    @php
+                    $userCount = 0;
+                @endphp
+                
+                @foreach($paginator->items() as $key => $user)
+                    @if($user->level == 'user') 
+                        @php
+                            $userCount++;
+                        @endphp
+                        <tr class="{{ $userCount % 2 == 0 ? 'bg-[#ecf0e82e] ' : 'bg-white' }}">
+                            <td class="py-2 px-4 border-b text-center">{{ $user->id}}</td>
                             <td class="py-2 px-4 border-b">
-                                <form action="{{ route('read-farmer.edit', $u->id) }}">
+                                <form action="{{ route('read-farmer.edit', $user->id) }}">
                                     @csrf
                                     <button class="submit">
                                         <div class="flex items-center justify-start ms-5">
@@ -70,29 +80,107 @@
                                                 <img src="{{ asset('images/user_besar_icon.svg') }}" alt="User Image" 
                                                     style="width: 30px; height: 30px; object-fit: cover;" class="mx-2">
                                             </div>
-                                            <p class="ms-3" style="color:#416D14;">{{ $u->name}}</p>
+                                            <p class="ms-3" style="color:#416D14;">{{ $user->name}}</p>
                                         </div>
                                     </button>
                                 </form>
                             </td>
-                            <td class="py-2 px-4 border-b text-center">{{ $u->email}}</td>
-                            <td class="py-2 px-4 border-b text-center">{{ $u->alamat_user }}</td>
+                            <td class="py-2 px-4 border-b text-center">{{ $user->email}}</td>
+                            <td class="py-2 px-4 border-b text-center">{{ $user->alamat_user }}</td>
                             <td class="py-2 px-4 border-b text-center">
-                                {{ $u->lahan->flatMap->sensor->count() }}
+                                {{ $user->totalUniqueSensors}}
                             </td>
                         </tr>
                     @endif
-                    @endforeach
+                @endforeach
+                
+
+
                 </table>
+
+                <nav class="w-full flex justify-center mt-5" aria-label="Page navigation example">
+                    <ul class="list-style-none flex">
+                        {{-- Tombol Previous --}}
+                        @if ($paginator->onFirstPage())
+                            <li>
+                                <a class="pointer-events-none flex items-center justify-center rounded-full hover:bg-[#CAE8AC] bg-gray-300 text-sm text-neutral-500 transition-all duration-300 dark:text-neutral-400 circle-button"
+                                   style="width: 19px; height: 19px; line-height: 19px;">
+                                    &lt;
+                                </a>
+                            </li>
+                        @else
+                            <li>
+                                <a class="flex items-center justify-center rounded-full bg-gray-300 text-sm text-neutral-600 transition-all duration-300 hover:bg-[#CAE8AC] dark:text-white dark:hover:bg-green-700 dark:hover:text-white circle-button"
+                                   href="{{ $paginator->previousPageUrl() }}"
+                                   style="width: 19px; height: 19px; line-height: 19px;">
+                                    &lt;
+                                </a>
+                            </li>
+                        @endif
+                
+                        {{-- Paginator Halaman --}}
+                        @foreach ($paginator->getUrlRange(1, $paginator->lastPage()) as $page => $url)
+                            @if ($page == 1 || $page == $paginator->lastPage() ||
+                                ($page >= $paginator->currentPage() - 2 && $page <= $paginator->currentPage() + 2))
+                                {{-- Tampilkan nomor halaman --}}
+                                <li aria-current="{{ ($page == $paginator->currentPage()) ? 'page' : '' }}">
+                                    <a class="relative block flex items-center justify-center
+                                            @if ($page == $paginator->currentPage())
+                                            bg-[#CAE8AC] text-black
+                                            @else
+                                            bg-transparent text-neutral-600 hover:bg-[#CAE8AC] dark:text-white dark:hover:bg-[#CAE8AC] dark:hover:text-white
+                                            @endif
+                                            mx-1 text-sm font-medium transition-all duration-300"
+                                       href="{{ ($page == $paginator->currentPage()) ? '#' : $url }}"
+                                       @if ($page == $paginator->currentPage())
+                                       aria-disabled="true"
+                                        @endif
+                                       style="width: 19px; height: 19px;">{{ $page }}
+                                    </a>
+                                </li>
+                            @elseif ($page == $paginator->currentPage() - 3)
+                                <li>
+                                    <span class="relative block  text-sm text-neutral-600 transition-all duration-300 dark:text-white dark:hover:bg-[#CAE8AC] dark:hover:text-white">
+                                        ...
+                                    </span>
+                                </li>
+                            @elseif ($page == $paginator->currentPage() + 3)
+                                <li>
+                                    <span class="relative block  text-sm text-neutral-600 transition-all duration-300 dark:text-white dark:hover:bg-[#CAE8AC] dark:hover:text-white">
+                                        ...
+                                    </span>
+                                </li>
+                            @endif
+                        @endforeach
+                
+                        {{-- Tombol Next --}}
+                        @if ($paginator->hasMorePages())
+                            <li>
+                                <a class="flex items-center justify-center relative block rounded-full bg-gray-300 text-sm text-neutral-600 transition-all duration-300 hover:bg-[#CAE8AC] dark:text-white dark:hover:bg-green-700 dark:hover:text-white"
+                                   style="width: 19px; height: 19px; line-height: 19px;"
+                                   href="{{ $paginator->nextPageUrl() }}">
+                                    &gt;
+                                </a>
+                            </li>
+                        @else
+                            <li>
+                                <a class="flex items-center justify-center relative block rounded-full bg-gray-300  text-sm text-neutral-500 transition-all duration-300  hover:bg-[#CAE8AC] dark:hover:bg-gray-700 dark:hover:text-white"
+                                   href="#!"
+                                   style="width: 19px; height: 19px; line-height: 19px;">
+                                    &gt;
+                                </a>
+                            </li>
+                        @endif
+                    </ul>
+                </nav>
+                
             </div>
 
         </div>
 
         <!-- Modal container -->
         <div id="modal" class="fixed hidden inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <!-- Modal content -->
             <div class="bg-white mx-4 md:mx-auto w-full max-w-lg rounded p-8">
-                <!-- Modal header -->
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-xl md:text-2xl font-bold">Tambah Farmer</h2>
                     <button id="closeModal" class="text-gray-700 hover:text-gray-900">
@@ -101,7 +189,7 @@
                         </svg>
                     </button>
                 </div>
-                <!-- Modal body -->
+
                 <form action="{{ route('farmer-store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-4">
@@ -130,14 +218,13 @@
                 </form>
 
             </div>
-            <!-- Modal footer -->
 
 
         </div>
     </div>
 
     <script>
-        // JavaScript to handle modal interactions
+        // JavaScript modal interaksi
         const openModalButton = document.getElementById('openModal');
         const closeModalButton = document.getElementById('closeModal');
         const modal = document.getElementById('modal');

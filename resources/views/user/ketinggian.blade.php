@@ -84,7 +84,7 @@
             <tr class="text-center">
                 <td class="p-2">{{ \Carbon\Carbon::parse($kl->waktu_perekaman)->format('H:i:s') }}</td>
                 <td class="p-2">{{ \Carbon\Carbon::parse($kl->waktu_perekaman)->format('Y-m-d') }}</td>
-                <td class="p-2">L007</td>
+                <td class="p-2">{{ $kl->id_sensor }}</td>
                 <td class=" p-2">{{ $kl->ketinggian }} Cd</td>
             </tr>
             @endforeach

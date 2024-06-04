@@ -34,39 +34,11 @@
                 <h class="font-bold p-4">Curah Hujan</h>
             </div>
             <div class="p-5">
-                <canvas id="chartjs-7" class="chartjs" width="undefined" height="undefined"></canvas>
-                <script>
-                    const tableData = <?php echo json_encode($dataSensor); ?>;
-    
-                    const labels = tableData.map(entry => entry.waktu_perekaman);
-                    const suhu = tableData.map(entry => entry.kelembaban_tanah);
-    
-                    const chart = new Chart(document.getElementById("chartjs-7"), {
-                        type: "line",
-                        data: {
-                            labels: labels,
-                            datasets: [{
-                                label: "Suhu Real-Time",
-                                data: suhu,
-                                borderColor: "rgb(255, 99, 132)",
-                                backgroundColor: "rgba(255, 99, 132, 0.2)"
-                            }],
-                        },
-                        options: {
-                            scales: {
-                                yAxes: [{
-                                    ticks: {
-                                        beginAtZero: true
-                                    }
-                                }]
-                            }
-                        }
-                    });
-    
-                </script>
+                <canvas id="raindropChart" class="w-full"></canvas>
+              
             </div>
         </div>
-     </div>
+    </div>
 
     <!-- Table for time and date -->
     <table class="w-full  mt-5">
@@ -80,14 +52,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($dataSensor as $k_tanah)
-            <tr class="text-center">
-                <td class="p-2">{{ \Carbon\Carbon::parse($k_tanah->waktu_perekaman)->format('H:i:s') }}</td>
-                <td class="p-2">{{ \Carbon\Carbon::parse($k_tanah->waktu_perekaman)->format('Y-m-d') }}</td>
-                <td class="p-2">L007</td>
-                <td class=" p-2">{{ $k_tanah->kelembaban_tanah }} %</td>
-            </tr>
-            @endforeach
+           
         </tbody>
     </table>
     <!-- /Table for time and date -->
@@ -113,7 +78,86 @@
             </a>
         </nav>
     </div>
-    <!-- /Pagination -->
+    <script>
+        var labels = {!! json_encode($waktu_perekaman) !!};
+        var data = {!! json_encode($RainDrop) !!};
+
+        var ctx = document.getElementById('raindropChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'line', // Jenis grafik diatur menjadi line chart
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Raindrop Intensity',
+                    data: data,
+                    borderColor: '#3182ce',
+                    borderWidth: 1,
+                    pointBackgroundColor: '#3182ce',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 1,
+                    pointRadius: 2,
+                    pointHoverRadius: 4,
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#3182ce',
+                    pointHoverBorderWidth: 2,
+                    fill: false, 
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Intensity',
+                            fontSize: 14 // Ukuran teks label sumbu y
+                        },
+                        ticks: {
+                            beginAtZero: true,
+                            fontColor: '#4a5568',
+                            fontSize: 12 // Ukuran teks angka sumbu y
+                        },
+                        gridLines: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        }
+                    }],
+                    xAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Time',
+                            fontSize: 14 // Ukuran teks label sumbu x
+                        },
+                        ticks: {
+                            fontColor: '#4a5568',
+                            fontSize: 10 // Ukuran teks angka sumbu x
+                        },
+                        gridLines: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        }
+                    }]
+                },
+                animation: {
+                    duration: 1000,
+                    easing: 'easeInOutQuart'
+                }
+            }
+        });
+
+        function fetchDataAndUpdateChart() {
+            fetch('/update-data-raindrop')
+                .then(response => response.json())
+                .then(data => {
+                    var newData = data.RainDrop;
+                    var newLabels = data.waktu_perekaman;
+
+                    myChart.data.datasets[0].data = newData;
+                    myChart.data.labels = newLabels;
+                    myChart.update();
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        setInterval(fetchDataAndUpdateChart, 2000);
+    </script>
 </div>
 
 @endsection

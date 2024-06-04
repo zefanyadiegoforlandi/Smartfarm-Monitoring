@@ -12,11 +12,17 @@
         </div>
     
         <div class=" mt-7 md:flex md:shadow-2xl md:rounded">
-            <div class="flex-col justify-center items-center md:bg-[#C6D2B9] py-12 md:px-20">
+            <div class="flex-col justify-center items-center md:bg-[#C6D2B9] py-20 md:px-20">
                 <img src="{{ asset('images/user_besar_icon.svg') }}" class="w-162 h-162 overflow-hidden rounded-full mb-4 mx-auto">
                 <div class="text-center">
-                    <p class="font-semibold text-black hidden md:block " style="font-size: 32px;">{{ Auth::user()->name }}</p>
-                    <p class="text-black hidden md:block" style="font-size: 24px;">Admin</p>
+                    <p class="font-semibold text-black hidden md:block text-4xl">{{ $users->name }}</p>
+                    <p class="text-black hidden md:block text-2xl">User</p>
+                </div>
+                <div class="flex justify-center space-x-4 mt-4">
+                    <a href="/pages/add/daftar-farmer" class="px-4 py-2 text-white rounded" style="background-color: #C63838;">Batal</a>
+                    <button type="submit" form="submit-form" class="submit">
+                        <div class="text-white px-4 py-2 rounded mx-4" style="width: 95px; background-color:#416D14;">Simpan</div>
+                    </button>
                 </div>
             </div>
             
@@ -30,44 +36,39 @@
                             <tr>
                                 <th class="text-start pe-9">Nama</th>
                                 <td class=" py-4">
-                                    <input type="text" name="name" id="name" value="{{ Auth::user()->name }}" class="border border-gray-300 rounded px-3 py-2 w-3/4">
+                                    <input type="text" name="name" id="name" value="{{ $users->name }}" class="border border-gray-300 rounded px-3 py-2 w-3/4">
                                 </td>
                             </tr>
                             <tr>
                                 <th class="text-start pe-9">Email</th>
                                 <td class=" py-4">
-                                    <input type="text" name="email" id="email" value="{{ Auth::user()->email }}" class="border border-gray-300 rounded px-3 py-2 w-3/4">
+                                    <input type="text" name="email" id="email" value="{{ $users->email }}" class="border border-gray-300 rounded px-3 py-2 w-3/4">
                                 </td>
                             </tr>
                             <tr>
                                 <th class="text-start pe-9">Farmer ID</th>
                                 <td class=" py-4">
-                                    <input type="text" name="id" id="id" value="{{ Auth::user()->id }}" class="border border-gray-300 rounded px-3 py-2 w-3/4">
+                                    <input type="text" name="id" id="id" value="{{ $users->id }}" class="border border-gray-300 rounded px-3 py-2 w-3/4">
 
                                 </td>
                             </tr>
                             <tr>
                                 <th class="text-start pe-9">Password</th>
                                 <td class=" py-4">
-                                    <input type="password" name="password" id="password" value="{{ Auth::user()->password }}" class="border border-gray-300 rounded px-3 py-2 w-3/4">
+                                    <input type="password" name="password" id="password" value="{{ $users->password }}" class="border border-gray-300 rounded px-3 py-2 w-3/4">
                                 </td>
                             </tr>
                             <tr>
-                                <th class="text-start pe-3">Alamat</th>
+                                <th class="text-start pe-9">Alamat</th>
                                 <td class=" py-4">
-                                    <input type="text" name="alamat_user" id="alamat_user" value="{{ Auth::user()->alamat_user }}" class="border border-gray-300 rounded px-3 py-2 w-3/4">
+                                    <input type="text" name="alamat_user" id="alamat_user" value="{{ $users->alamat_user }}" class="border border-gray-300 rounded px-3 py-2 w-3/4">
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                    <div class="flex justify-end space-x-4 mt-4">
-                        <form action="{{ route('form-auth.edit', Auth::user()->name ) }}">
-                            @csrf
-                            <button type="submit" class="px-4 py-2 text-white rounded"
-                                style="background-color: #416D14;">Simpan</button>
-                        </form>
-                    </div>
                 </form>    
+    
+                
             </div>
         </div>
     </div>

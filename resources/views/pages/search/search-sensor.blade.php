@@ -78,7 +78,7 @@
                                 </form>
                             </td>
                             <td class="py-2 px-4 border-b text-center">{{ $s->id_lahan}}</td>
-                            <td class="py-2 px-4 border-b text-center">{{ $s->lahan->alamat_lahan }}</td>
+                            <td class="py-2 px-4 border-b text-center">{{ $s->alamat_lahan }}</td>
                             <td class="py-2 px-4 border-b text-center">{{ $s->tanggal_aktivasi}}</td>
                         </tr>
                         @endforeach

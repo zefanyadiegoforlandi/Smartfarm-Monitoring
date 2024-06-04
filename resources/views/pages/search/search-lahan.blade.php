@@ -20,9 +20,7 @@
 
         </div>            
             <!-- Hamburger button -->
-        
-      
-                
+            
         <div class="FLEX flex-col mt-5 ml-4 mr-4">
             <div class="text-container-daftar flex flex-col sm:flex-row justify-between items-start">
                 <div class="daftar-farmer text-3xl text-league-spartan mb-2 sm:mb-0" style="color:#416D14">
@@ -67,7 +65,7 @@
                     <thead style="height: 53px; background-color:#ECF0E8; color:#416D14">
                         <tr>
                             <th class="py-2 px-4 border-b">ID LAHAN</th>
-                            <th class="py-2 px-4 border-b">ID USER</th>
+                            <th class="py-2 px-4 border-b">NAMA USERS</th>
                             <th class="py-2 px-4 border-b">ALAMAT LAHAN</th>
                             <th class="py-2 px-4 border-b">LUAS LAHAN</th>
                         </tr>
@@ -82,7 +80,7 @@
                                     <button class="submit" style="color:#416D14;">{{ $l->id_lahan}}</button>
                                 </form>
                             </td>
-                            <td class="py-2 px-4 border-b text-center">{{ $l->id_user}}</td>
+                            <td class="py-2 px-4 border-b text-center">{{ $l->user_name}}</td>
                             <td class="py-2 px-4 border-b text-center">{{ $l->alamat_lahan }}</td>
                             <td class="py-2 px-4 border-b text-center">{{ $l->luas_lahan }}</td>
                         </tr>
@@ -114,7 +112,7 @@
                <form action="{{ route('lahan-store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-4">
-                    <label for="id_user" class="block text-gray-700 font-bold">ID FARMER</label>
+                    <label for="id_user" class="block text-gray-700 font-bold">Id Users</label>
                     <input type="text" name="id_user" id="id_user" class="border border-gray-300 rounded px-3 py-2 w-full">
                 </div>
                 <div class="mb-4">

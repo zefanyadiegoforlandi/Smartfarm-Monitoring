@@ -4,21 +4,26 @@
         <div class="modal-content bg-white mx-4 md:mx-auto w-full max-w-lg rounded p-8 shadow-lg">
 
             <div class="modal-header text-black text-center py-2 rounded-t" style="background-color: #C6D2B9;">
-                <h2 class="text-xl md:text-2xl font-bold">Update Lahan</h2>
+                <h2 class="text-xl md:text-2xl font-bold">UPDATE LAHAN {{ $lahan->id_lahan }}</h2>
             </div>
             
             <div class="modal-body">
                 <form action="{{ route('form-lahan.update', ['id' => $lahan->id_lahan]) }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    @method('PUT')
+                    @method('POST')
                     <div class="mb-4">
-                        <label for="id_lahan" class="block text-gray-700 font-bold">ID Lahan</label>
-                        <input type="text" name="id_lahan" id="id_lahan" value="{{ $lahan->id_lahan }}" class="border border-gray-300 rounded px-3 py-2 w-full">
+                        <label for="id_user" class="block text-gray-700 font-bold">ID FARMER</label>
+                        <select name="id_user" id="id_user" class="border border-gray-300 rounded px-3 py-2 w-full">
+                            @foreach($users as $user)
+                                @if($user->level === 'user')
+                                    <option value="{{ $user->id }}" {{ $user->name == $lahan->user_name ? 'selected' : '' }}>
+                                        {{ $user->name }}
+                                    </option>
+                                @endif
+                            @endforeach    
+                        </select>
                     </div>
-                    <div class="mb-4">
-                        <label for="id_user" class="block text-gray-700 font-bold">ID User</label>
-                        <input type="text" name="id_user" id="id_user" value="{{ $lahan->id_user }}" class="border border-gray-300 rounded px-3 py-2 w-full">
-                    </div>
+                    
                     <div class="mb-4">
                         <label for="alamat_lahan" class="block text-gray-700 font-bold">Alamat Lahan</label>
                         <input type="text" name="alamat_lahan" id="alamat_lahan" value="{{ $lahan->alamat_lahan}}" class="border border-gray-300 rounded px-3 py-2 w-full">

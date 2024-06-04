@@ -10,36 +10,39 @@
             <div class="modal-body">
                 <form action="{{ route('form-sensor.update', $sensor->id_sensor) }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    @method('PUT')
+                    @method('POST')
                     <div class="mb-4">
-                        <label for="id_sensor" class="block text-gray-700 font-bold">ID Sensor</label>
-                        <input type="text" name="id_sensor" id="id_sensor" value="{{ $sensor->id_sensor }}" class="border border-gray-300 rounded px-3 py-2 w-full">
+                        <label for="id_user" class="block text-gray-700 font-bold">Id Lahan</label>
+                        <select name="id_lahan" id="id_lahan" class="border border-gray-300 rounded px-3 py-2 w-full">
+                            @foreach($lahan as $l)
+                                <option value="{{ $l->id_lahan }}" {{ $l->id_lahan == $sensor->id_lahan ? 'selected' : '' }}>
+                                    {{ $l->id_lahan }}
+                                </option>
+                            @endforeach    
+                        </select>
                     </div>
                     <div class="mb-4">
-                        <label for="id_lahan" class="block text-gray-700 font-bold">ID Lahan</label>
-                        <input type="text" name="id_lahan" id="id_lahan" value="{{ $sensor->id_lahan }}" class="border border-gray-300 rounded px-3 py-2 w-full">
-                    </div>
-                    <div class="mb-4">
-                        <label for="nama" class="block text-gray-700 font-bold">Letak Sensor</label>
-                        <div name="nama" id="nama" class=" rounded px-3 py-2 w-full">
-                            {{ $sensor->lahan->alamat_lahan }}
-                        </div>    
-                    </div>
-                    <div class="mb-4">
-                        <label for="tanggal_aktivasi" class="block text-gray-700 font-bold">Tanggal Aktivasi</label>
-                        <textarea name="tanggal_aktivasi" id="tanggal_aktivasi" class="border border-gray-300 rounded px-3 py-4 w-full max-w-full h-20 resize-y">{{$sensor->tanggal_aktivasi }}</textarea>
+                        <label for="tanggal_aktivasi" class="block text-gray-700 font-bold">TANGGAL AKTIVASI</label>
+                        <input type="text" name="tanggal_aktivasi" id="tanggal_aktivasi" class="border border-gray-300 rounded px-3 py-2 w-full">
                     </div>
 
-                    <div class="flex justify-end space-x-4 mt-4">
-                        <a href="/pages/add/daftar-sensor" class="px-4 py-2 text-white rounded" style="background-color: #C63838;">Batal</a>
-
-                        <button type="submit"  class="px-4 py-2 text-white rounded" style="background-color: #416D14;" onclick="submitForm()">
-                            Simpan
-                        </button>     
+                    <div class="mt-4">
+                        <button class="btn bg-red-500 text-white mr-4" onclick="closeModal()" type="button">Cancel</button>
+                        <button type="submit" class="btn bg-green-500 text-white" onclick="closeModal()">OK</button>
                     </div>
                 </form>
             </div>
-        </div>
-        
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+            <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+            <script>
+                // Inisialisasi Flatpickr pada elemen dengan ID 'tanggal_aktivasi'
+                flatpickr("#tanggal_aktivasi", {
+                    enableTime: true, // Aktifkan pilihan waktu
+                    dateFormat: "Y-m-d H:i:s", // Format tanggal dan waktu
+                    defaultDate: "{{ $sensor->tanggal_aktivasi }}", // Gunakan nilai tanggal_aktivasi dari $sensor sebagai nilai awal
+                });
+            </script>
+    
+            
     </div>
 </x-app-layout>    

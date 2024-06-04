@@ -8,8 +8,7 @@
                 class="text-slate-500 hover:text-slate-600 lg:hidden"
                 @click.stop="sidebarOpen = !sidebarOpen"
                 aria-controls="sidebar"
-                :aria-expanded="sidebarOpen"
-            >
+                :aria-expanded="sidebarOpen">
                 <span class="sr-only">Open sidebar</span>
                 <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <rect x="4" y="5" width="16" height="2" />
@@ -31,7 +30,7 @@
                 
                
                 <div class="flex items-center">
-        
+                     {{--Button Tambah--}}
                     <button id="openModal" class="btn mx-5" style="background-color: #416D14; color: white; transition: 
                         background-color 0.3s ease, color 0.3s ease; border: none; padding: 10px 20px; cursor: pointer;"
                         onmouseover="this.style.backgroundColor='#274706'; this.style.color='white';"
@@ -67,139 +66,157 @@
                     <thead style="height: 53px; background-color:#ECF0E8; color:#416D14">
                         <tr>
                             <th class="py-2 px-4 border-b">ID LAHAN</th>
-                            <th class="py-2 px-4 border-b">ID USER</th>
+                            <th class="py-2 px-4 border-b">FARMER</th>
                             <th class="py-2 px-4 border-b">ALAMAT LAHAN</th>
                             <th class="py-2 px-4 border-b">LUAS LAHAN</th>
                         </tr>
                     </thead>
         
                     <tbody style="height: 53px;">
-                        @foreach ($lahan as $l )
-                        <tr>
+                        @foreach($paginator->items() as $key => $lahan)
+
+                        <tr class="{{ $loop->iteration % 2 == 0 ? 'bg-[#ecf0e82e]' : 'bg-white' }}">
                             <td class="py-2 px-4 border-b text-center">
-                                <form action="{{ route('read-lahan.edit', $l->id_lahan) }}">
+                                <form action="{{ route('read-lahan.edit', $lahan->id_lahan) }}">
                                     @csrf
-                                    <button class="submit" style="color:#416D14;">{{ $l->id_lahan}}</button>
+                                    <button class="submit" style="color:#416D14;">{{ $lahan->id_lahan}}</button>
                                 </form>
                             </td>
-                            <td class="py-2 px-4 border-b text-center">{{ $l->id_user}}</td>
-                            <td class="py-2 px-4 border-b text-center">{{ $l->alamat_lahan }}</td>
-                            <td class="py-2 px-4 border-b text-center">{{ $l->luas_lahan }}</td>
+                            <td class="py-2 px-4 border-b text-center">{{ $lahan->user_name}}</td>
+                            <td class="py-2 px-4 border-b text-center">{{ $lahan->alamat_lahan }}</td>
+                            <td class="py-2 px-4 border-b text-center">{{ $lahan->luas_lahan }}</td>
                         </tr>
                         @endforeach
-                        <!-- Add more rows as needed -->
+
                     </tbody>
                     
                 </table>
-                <nav aria-label="Page navigation example">
+                <nav class="w-full flex justify-center mt-5" aria-label="Page navigation example">
                     <ul class="list-style-none flex">
                         {{-- Tombol Previous --}}
-                        @if ($lahan->onFirstPage())
                         <li>
-                            <a class="pointer-events-none relative block rounded-full bg-gray-300 px-3 py-1.5 
-                                text-sm text-neutral-500 transition-all duration-300 dark:text-neutral-400">&lt;</a>
+                            <a class="flex items-center justify-center rounded-full 
+                                @if ($paginator->currentPage() == 1) 
+                                pointer-events-none bg-gray-300 text-neutral-500
+                                @else 
+                                bg-gray-300 text-neutral-600 hover:bg-[#CAE8AC] dark:text-white dark:hover:bg-green-700 dark:hover:text-white
+                                @endif
+                                circle-button"
+                                style="width: 19px; height: 19px; line-height: 19px;"
+                                @if ($paginator->currentPage() == 1)
+                                aria-disabled="true"
+                                @else
+                                href="{{ $paginator->previousPageUrl() }}"
+                                @endif
+                            >&lt;</a>
                         </li>
-                        @else
-                        <li>
-                            <a class="relative block rounded-full bg-gray-300 px-3 py-1.5 text-sm text-neutral-600 
-                                transition-all duration-300 hover:bg-green-100 dark:text-white dark:hover:bg-green-700 dark:hover:text-white"
-                                href="{{ $lahan->previousPageUrl() }}">&lt;</a>
-                        </li>
-                        @endif
                 
                         {{-- Tautan Halaman --}}
-                        @foreach ($lahan->getUrlRange(1, $lahan->lastPage()) as $page => $url)
-                            @if ($page == 1 || $page == $lahan->lastPage() || 
-                                ($page >= $lahan->currentPage() - 2 && $page <= $lahan->currentPage() + 2))
-                                {{-- Tampilkan nomor halaman --}}
-                                <li aria-current="{{ ($page == $lahan->currentPage()) ? 'page' : '' }}">
-                                    <a class="relative block rounded 
-                                        @if ($page == $lahan->currentPage()) 
-                                            bg-green-500 text-white
-                                        @else 
-                                            bg-transparent text-neutral-600 
-                                            hover:bg-green-100 dark:text-white dark:hover:bg-green-700 dark:hover:text-white
-                                        @endif
-                                        px-3 py-1.5 text-sm font-medium transition-all duration-300"
-                                        href="{{ ($page == $lahan->currentPage()) ? '#' : $url }}"
-                                        @if ($page == $lahan->currentPage())
-                                            aria-disabled="true"
-                                        @endif
-                                    >{{ $page }}
-                                        @if ($page == $lahan->currentPage())
-                                        <span class="absolute -m-px h-px w-px overflow-hidden whitespace-nowrap border-0 p-0 [clip:rect(0,0,0,0)]">(current)</span>
-                                        @endif
-                                    </a>
-                                </li>
-                            @elseif ($page == $lahan->currentPage() - 3)
-                                <li>
-                                    <span class="relative block rounded px-3 py-1.5 text-sm text-neutral-600 
-                                        transition-all duration-300 dark:text-white dark:hover:bg-green-700 dark:hover:text-white">...</span>
-                                </li>
-                            @elseif ($page == $lahan->currentPage() + 3)
-                                <li>
-                                    <span class="relative block rounded px-3 py-1.5 text-sm text-neutral-600 
-                                        transition-all duration-300 dark:text-white dark:hover:bg-green-700 dark:hover:text-white">...</span>
-                                </li>
-                            @endif  
+                        @foreach ($paginator->getUrlRange(1, $paginator->lastPage()) as $page => $url)
+                            <li aria-current="{{ ($page == $paginator->currentPage()) ? 'page' : '' }}">
+                                <a class="relative block flex items-center justify-center 
+                                    @if ($page == $paginator->currentPage()) 
+                                    bg-[#CAE8AC] text-black
+                                    @else 
+                                    bg-transparent text-neutral-600 hover:bg-[#CAE8AC] dark:text-white dark:hover:bg-[#CAE8AC] dark:hover:text-white
+                                    @endif
+                                    mx-1  text-sm font-medium transition-all duration-300"
+                                    style="width: 19px; height: 19px;"
+                                    href="{{ ($page == $paginator->currentPage()) ? '#' : $url }}"
+                                    @if ($page == $paginator->currentPage())
+                                    aria-disabled="true"
+                                    @endif
+                                >{{ $page }}
+                                    @if ($page == $paginator->currentPage())
+                                    <span class="absolute -m-px h-px w-px overflow-hidden whitespace-nowrap border-0 p-0 [clip:rect(0,0,0,0)]">(current)</span>
+                                    @endif
+                                </a>
+                            </li>
                         @endforeach
-                        @if ($lahan->hasMorePages())
-                            <li>
-                                <a class="relative block rounded-full bg-gray-300 px-3 py-1.5 text-sm text-neutral-600 
-                                    transition-all duration-300 hover:bg-green-100 dark:text-white dark:hover:bg-green-700 dark:hover:text-white"
-                                    href="{{ $lahan->nextPageUrl() }}">&gt;</a>
-                            </li>
-                            @else
-                            <li>
-                                <a class="relative block rounded-full bg-gray-300 px-3 py-1.5 text-sm text-neutral-500 
-                                    transition-all duration-300 dark:text-neutral-400 hover:bg-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                                    href="#!">&gt;</a>
-                            </li>
-                        @endif
+                
+                        {{-- Tombol Next --}}
+                        <li>
+                            <a class="flex items-center justify-center relative block rounded-full 
+                                @if (!$paginator->hasMorePages())
+                                pointer-events-none bg-gray-300 text-neutral-500
+                                @else
+                                bg-gray-300 text-neutral-600 hover:bg-[#CAE8AC] dark:text-white dark:hover:bg-green-700 dark:hover:text-white
+                                @endif
+                                circle-button"
+                                style="width: 19px; height: 19px; line-height: 19px;"
+                                @if ($paginator->hasMorePages())
+                                href="{{ $paginator->nextPageUrl() }}"
+                                @else
+                                href="#!"
+                                @endif
+                            >&gt;</a>
+                        </li>
                     </ul>
                 </nav>
+                
             </div>
         </div>
-
     </div>
         
-    <!-- Modal container -->
     <div id="modal" class="fixed hidden inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-       <!-- Modal content -->
-       <div class="bg-white mx-4 md:mx-auto w-full max-w-lg rounded p-8">
-         <!-- Modal header -->
-           <div class="flex justify-between items-center mb-4">
-               <h2 class="text-xl md:text-2xl font-bold">Tambah Lahan</h2>
-               <button id="closeModal" class="text-gray-700 hover:text-gray-900">
-               <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
-                   <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
-               </svg>
-               </button>
-           </div>
-               <form action="{{ route('lahan-store') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <div class="mb-4">
-                        <label for="id_user" class="block text-gray-700 font-bold">ID FARMER</label>
-                        <input type="text" name="id_user" id="id_user" class="border border-gray-300 rounded px-3 py-2 w-full">
-                    </div>
-                    <div class="mb-4">
-                        <label for="alamat_lahan" class="block text-gray-700 font-bold">Alamat Lahan</label>
-                        <input type="text" name="alamat_lahan" id="alamat_lahan"  class="border border-gray-300 rounded px-3 py-2 w-full">
-                    </div>
-                    <div class="mb-4">
-                        <label for="luas_lahan" class="block text-gray-700 font-bold">Luas Lahan</label>
-                        <input type="number" name="luas_lahan" id="luas_lahan"  class="border border-gray-300 rounded px-3 py-2 w-full">
-                    </div>
+        <div class="bg-white mx-4 md:mx-auto w-full max-w-lg rounded p-8">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl md:text-2xl font-bold">Tambah Lahan</h2>
+                <button id="closeModal" class="text-gray-700 hover:text-gray-900">
+                <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                </svg>
+                </button>
+            </div>
+            <form action="{{ route('lahan-store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="mb-4">
+                    <label for="id_user" class="block text-gray-700 font-bold">ID FARMER</label>
+                    <select name="id_user" id="id_user" class="border border-gray-300 rounded px-3 py-2 w-full">
+                        <option value="">Pilih Farmer</option>
+                        @foreach($users as $user)
+                            @if($user->level === 'user')
+                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                </div>
                 
-                    <div class="flex justify-end mt-4">
-                        <button class="btn bg-red-500 text-white mr-4" onclick="closeModal()" type="button">Cancel</button>
-                        <button type="submit" class="btn bg-green-500 text-white" onclick="closeModal()">OK</button>
-                    </div>
-                </form>
-            </div>                
-               
+                <div class="mb-4">
+                    <label for="alamat_lahan" class="block text-gray-700 font-bold">Alamat Lahan</label>
+                    <input type="text" name="alamat_lahan" id="alamat_lahan" class="border border-gray-300 rounded px-3 py-2 w-full">
+                </div>
+                <div class="mb-4">
+                    <label for="luas_lahan" class="block text-gray-700 font-bold">Luas Lahan</label>
+                    <input type="number" name="luas_lahan" id="luas_lahan" class="border border-gray-300 rounded px-3 py-2 w-full">
+                </div>
+                <div class="flex justify-end mt-4">
+                    <button class="btn bg-red-500 text-white mr-4" onclick="closeModal()" type="button">Cancel</button>
+                    <button type="submit" class="btn bg-green-500 text-white" onclick="handleSubmit()">OK</button>
+                </div>
+            </form>
         </div>
     </div>
+
+
+
+
+
+
+
+        <script>
+            function handleSubmit(event) {
+                event.preventDefault(); 
+                var selectedUserId = document.getElementById('id_user').value;
+                document.getElementById('id_user').value = selectedUserId;        
+                document.querySelector('form').submit();
+            }
+        
+            function closeModal() {
+                document.getElementById('modal').classList.add('hidden');
+            }
+        </script>
+    
    
         <script>
             // JavaScript to handle modal interactions
@@ -232,7 +249,9 @@
             });
         </script>
         @endif
+
         <script>
+            //session simpan
             document.addEventListener('DOMContentLoaded', function () {
                 const successMessage = "{{ session('simpan') }}";
         
@@ -256,10 +275,13 @@
                 }
             });
         </script>
+
         <script>
+            //session delete
+
             document.addEventListener('DOMContentLoaded', function () {
                 const successMessage = "{{ session('delete') }}";
-        
+    
                 if (successMessage) {
                     const Toast = Swal.mixin({
                         toast: true,
@@ -280,7 +302,9 @@
                 }
             });
         </script>
+
         <script>
+            //session tambah
             document.addEventListener('DOMContentLoaded', function () {
                 const successMessage = "{{ session('tambah') }}";
         

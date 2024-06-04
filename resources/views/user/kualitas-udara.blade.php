@@ -67,53 +67,6 @@
             </div>
         </div>
      </div>
-
-    <!-- Table for time and date -->
-    <table class="w-full  mt-5">
-        <thead class="bg-[#ECF0E8]">
-            <tr>
-                <th class="p-2 text-[#416D14] uppercase">Time</th>
-                <th class="p-2 text-[#416D14] uppercase">Date</th>
-                <!-- Add Sensor ID and Temperature columns for medium screens and larger -->
-                <th class="hidden md:table-cell p-2 text-[#416D14] uppercase">Sensor ID</th>
-                <th class="hidden md:table-cell p-2 text-[#416D14] uppercase">Kualitas Udara</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($dataSensor as $ku_udara)
-            <tr class="text-center">
-                <td class="p-2">{{ \Carbon\Carbon::parse($ku_udara->waktu_perekaman)->format('H:i:s') }}</td>
-                <td class="p-2">{{ \Carbon\Carbon::parse($ku_udara->waktu_perekaman)->format('Y-m-d') }}</td>
-                <td class="p-2">L007</td>
-                <td class=" p-2">{{ $ku_udara->kualitas_udara }} Cd</td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-    <!-- /Table for time and date -->
-
-    <!-- Pagination -->
-    <div class="flex justify-center mt-5">
-        <nav class="relative z-0 inline-flex shadow-sm">
-            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md  bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
-                <span class="sr-only">Previous</span>
-                <!-- Heroicon name: solid/chevron-left -->
-                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd" d="M13 5l-3 3 3 3 1-1-2-2 2-2 1-1z" clip-rule="evenodd" />
-                </svg>
-            </a>
-            <span class="relative inline-flex items-center px-4 py-2  bg-white text-sm font-medium text-gray-700">1</span>
-            <a href="#" class="relative inline-flex items-center px-4 py-2 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">2</a>
-            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md  bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500">
-                <span class="sr-only">Next</span>
-                <!-- Heroicon name: solid/chevron-right -->
-                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd" d="M7 5l3 3-3 3-1-1 2-2-2-2-1-1z" clip-rule="evenodd" />
-                </svg>
-            </a>
-        </nav>
-    </div>
-    <!-- /Pagination -->
 </div>
 
 @endsection

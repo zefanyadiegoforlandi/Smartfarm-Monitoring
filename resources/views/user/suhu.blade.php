@@ -13,12 +13,19 @@
         </div>
        <!-- ... -->
         <div class="relative w-[97px] md:w-[124px] h-[27px] ">
-            <select id="filter" name="filter"
-                class="block appearance-none w-full bg-[#416D14] border border-gray-300 text-white py-1 px-1 rounded-lg leading-tight focus:outline-none focus:border-blue-500 text-center text-xs font-semibold ">
-                @foreach ($dataLahan as $lahan)
-                    <option value="{{ $lahan->id_lahan }}">{{ $lahan->id_lahan }}</option>
-                @endforeach
-            </select>
+            <form action="{{ route('lihat.suhu') }}" method="get">
+                @csrf
+                <select id="filter" name="filter" 
+                    class="block appearance-none w-full bg-[#416D14] border border-gray-300 text-white py-1 px-1 rounded-lg leading-tight focus:outline-none focus:border-blue-500 text-center text-xs font-semibold "
+                    onchange="this.form.submit()">
+                    <option value="">Semua Lahan</option>
+                    @foreach ($dataLahan as $lahan)
+                        <option value="{{ $lahan->id_lahan }}" {{ request('filter') == $lahan->id_lahan ? 'selected' : '' }}>
+                            {{ $lahan->id_lahan }}
+                        </option>
+                    @endforeach
+                </select>
+            </form>
             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white">
                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                     <path d="M5 8l5 5 5-5z" />
@@ -30,7 +37,7 @@
 
     <div class="w-full mt-7" id="data-container">
         <!-- Kartu Grafik -->
-        <div class="bg-white border-transparent rounded-lg shadow-xl">
+        <div class="bg-white border-transparent rounded-lg shadow-xl col-span-2 md:col-span-1">
             <div class="bg-[#ECF0E8] rounded-tl-lg rounded-tr-lg p-2">
                 <h class="font-bold p-4">Suhu</h>
             </div>
@@ -69,9 +76,12 @@
                         options: {
                             scales: {
                                 x: [{
-                                        type: 'linear', // Jika ini tidak berfungsi, sesuaikan dengan 'category'
-                                        position: 'bottom',
-                                    }],
+                                    type: 'time',
+                                    time: {
+                                        unit: 'minute' // sesuaikan dengan unit waktu yang sesuai
+                                    },
+                                    position: 'bottom',
+                                }],
                                 y: {
                                     min: 20,
                                     max: 35,
@@ -85,7 +95,7 @@
         </div>            
     </div>
 
-    <div id="data-container">
+    <div id="data-container" class="col-span-2 md:col-span-1">
         <table class="w-full  mt-5">
             <thead class="bg-[#ECF0E8]">
                 <tr>
@@ -134,7 +144,87 @@
     </div>
     <!-- /Pagination -->
 </div>
+<script>
+        document.getElementById('filter').addEventListener('change', function () {
+            var selectedLahanId = this.value;
 
+            // Request data baru dari server berdasarkan ID lahan yang dipilih
+            fetch('/lihat.suhu/' + selectedLahanId)
+                .then(response => response.json())
+                .then(data => {
+                    // Perbarui data pada bagian tampilan yang relevan
+                    updateChartData(data);
+                    updateTableData(data);
+                })
+                .catch(error => console.error('Error:', error));
+        });
+
+        function updateChartData(data) {
+        const chart = new Chart(document.getElementById("chartjs-7"), {
+            type: "line",
+            data: {
+                labels: data.map(entry => entry.waktu_perekaman.split(' ')[1]),
+                datasets: [{
+                    label: "Suhu Real-Time",
+                    data: data.map(entry => {
+                        if (entry.suhu < 20) {
+                            return 20;
+                        } else if (entry.suhu > 35) {
+                            return 35;
+                        } else {
+                            return entry.suhu;
+                        }
+                    }),
+                    borderColor: "rgb(65,109,20)",
+                    backgroundColor: "rgb(236, 240, 232)"
+                }],
+            },
+            options: {
+                scales: {
+                    x: [{
+                        type: 'time',
+                        time: {
+                            unit: 'minute'
+                        },
+                        position: 'bottom',
+                    }],
+                    y: {
+                        min: 20,
+                        max: 35,
+                    }
+                }
+            },
+        });
+    }
+
+        function updateTableData(data) {
+            var tbody = document.querySelector('#data-container tbody');
+            tbody.innerHTML = '';
+
+            data.forEach(entry => {
+                var row = document.createElement('tr');
+                row.classList.add('text-center');
+
+                var waktu = document.createElement('td');
+                waktu.textContent = entry.waktu_perekaman.split(' ')[1];
+                row.appendChild(waktu);
+
+                var tanggal = document.createElement('td');
+                tanggal.textContent = entry.waktu_perekaman.split(' ')[0];
+                row.appendChild(tanggal);
+
+                var idSensor = document.createElement('td');
+                idSensor.textContent = entry.id_sensor;
+                row.appendChild(idSensor);
+
+                var suhu = document.createElement('td');
+                suhu.textContent = entry.suhu + ' C';
+                row.appendChild(suhu);
+
+                tbody.appendChild(row);
+            });
+        }
+    </script>
 
 
 

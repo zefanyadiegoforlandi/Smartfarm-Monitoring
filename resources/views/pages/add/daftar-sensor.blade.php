@@ -67,92 +67,107 @@
                             <th class="py-2 px-4 border-b">TANGGAL AKTIVASI</th>
                         </tr>
                     </thead>
-        
+            
                     <tbody style="height: 53px;">
-                        @foreach ($sensor as $s )
-                        <tr>
+                        @foreach($paginator->items() as $key => $sensor)
+                        <tr class="{{ $loop->iteration % 2 == 0 ? 'bg-[#ecf0e82e]' : 'bg-white' }}">
                             <td class="py-2 px-4 border-b text-center">
-                                <form action="{{ route('read-sensor.edit', $s->id_sensor) }}">
+                                <form action="{{ route('read-sensor.edit', $sensor->id_sensor) }}" method="GET">
                                     @csrf
-                                    <button class="submit" style="color: #416D14">{{ $s->id_sensor}}</button>
+                                    <button type="submit" style="color: #416D14">{{ $sensor->id_sensor }}</button>
                                 </form>
                             </td>
-                            <td class="py-2 px-4 border-b text-center">{{ $s->id_lahan}}</td>
-                            <td class="py-2 px-4 border-b text-center">{{ optional($s->lahan)->alamat_lahan ?? 'Tidak ada lahan' }}</td>
-                            <td class="py-2 px-4 border-b text-center">{{ $s->tanggal_aktivasi}}</td>
+                            <td class="py-2 px-4 border-b text-center">{{ $sensor->id_lahan }}</td>
+                            <td class="py-2 px-4 border-b text-center">{{ $sensor->alamat_lahan }}</td>
+                            <td class="py-2 px-4 border-b text-center">{{ $sensor->tanggal_aktivasi }}</td>
                         </tr>
                         @endforeach
                     </tbody>
-                    
+            
                 </table>
-
-                <nav aria-label="Page navigation example">
+            
+                <nav class="w-full flex justify-center mt-5" aria-label="Page navigation example">
                     <ul class="list-style-none flex">
                         {{-- Tombol Previous --}}
-                        @if ($sensor->onFirstPage())
-                        <li>
-                            <a class="pointer-events-none relative block rounded-full bg-gray-300 px-3 py-1.5 
-                                text-sm text-neutral-500 transition-all duration-300 dark:text-neutral-400">&lt;</a>
-                        </li>
+                        @if ($paginator->onFirstPage())
+                            <li>
+                                <a class="pointer-events-none flex items-center justify-center rounded-full hover:bg-[#CAE8AC] bg-gray-300 text-sm text-neutral-500 transition-all duration-300 dark:text-neutral-400 circle-button"
+                                style="width: 19px; height: 19px; line-height: 19px;">
+                                &lt;
+                                </a>
+                            </li>
                         @else
-                        <li>
-                            <a class="relative block rounded-full bg-gray-300 px-3 py-1.5 text-sm text-neutral-600 
-                                transition-all duration-300 hover:bg-green-100 dark:text-white dark:hover:bg-green-700 dark:hover:text-white"
-                                href="{{ $sensor->previousPageUrl() }}">&lt;</a>
-                        </li>
+                            <li>
+                                <a class="flex items-center justify-center rounded-full bg-gray-300 text-sm text-neutral-600 transition-all duration-300 hover:bg-[#CAE8AC] dark:text-white dark:hover:bg-green-700 dark:hover:text-white circle-button"
+                                href="{{ $paginator->previousPageUrl() }}"
+                                style="width: 19px; height: 19px; line-height: 19px;">
+                                &lt;
+                                </a>
+                            </li>
                         @endif
-                
+            
+                    
                         {{-- Tautan Halaman --}}
-                        @foreach ($sensor->getUrlRange(1, $sensor->lastPage()) as $page => $url)
-                            @if ($page == 1 || $page == $sensor->lastPage() || 
-                                ($page >= $sensor->currentPage() - 2 && $page <= $sensor->currentPage() + 2))
+                        @foreach ($paginator->getUrlRange(1, $paginator->lastPage()) as $page => $url)
+                            @if ($page == 1 || $page == $paginator->lastPage() || 
+                                ($page >= $paginator->currentPage() - 2 && $page <= $paginator->currentPage() + 2))
                                 {{-- Tampilkan nomor halaman --}}
-                                <li aria-current="{{ ($page == $sensor->currentPage()) ? 'page' : '' }}">
-                                    <a class="relative block rounded 
-                                        @if ($page == $sensor->currentPage()) 
-                                            bg-green-500 text-white
+                                <li aria-current="{{ ($page == $paginator->currentPage()) ? 'page' : '' }}">
+                                    <a class="relative block flex items-center justify-center 
+                                        @if ($page == $paginator->currentPage()) 
+                                        bg-[#CAE8AC] text-black
                                         @else 
                                             bg-transparent text-neutral-600 
-                                            hover:bg-green-100 dark:text-white dark:hover:bg-green-700 dark:hover:text-white
+                                            hover:bg-[#CAE8AC] dark:text-white dark:hover:bg-[#CAE8AC] dark:hover:text-white
                                         @endif
-                                        px-3 py-1.5 text-sm font-medium transition-all duration-300"
-                                        href="{{ ($page == $sensor->currentPage()) ? '#' : $url }}"
-                                        @if ($page == $sensor->currentPage())
+                                        mx-1  text-sm font-medium transition-all duration-300"
+            
+                                        href="{{ ($page == $paginator->currentPage()) ? '#' : $url }}"
+                                        @if ($page == $paginator->currentPage())
                                             aria-disabled="true"
                                         @endif
+                                        style="width: 19px; height: 19px;"
                                     >{{ $page }}
-                                        @if ($page == $sensor->currentPage())
+                                        @if ($page == $paginator->currentPage())
                                         <span class="absolute -m-px h-px w-px overflow-hidden whitespace-nowrap border-0 p-0 [clip:rect(0,0,0,0)]">(current)</span>
                                         @endif
                                     </a>
                                 </li>
-                            @elseif ($page == $sensor->currentPage() - 3)
+                            @elseif ($page == $paginator->currentPage() - 3)
                                 <li>
-                                    <span class="relative block rounded px-3 py-1.5 text-sm text-neutral-600 
-                                        transition-all duration-300 dark:text-white dark:hover:bg-green-700 dark:hover:text-white">...</span>
+                                    <span class="relative block  text-sm text-neutral-600 
+                                        transition-all duration-300 dark:text-white dark:hover:bg-[#CAE8AC] dark:hover:text-white"
+                                        >...</span>
                                 </li>
-                            @elseif ($page == $sensor->currentPage() + 3)
+                            @elseif ($page == $paginator->currentPage() + 3)
                                 <li>
-                                    <span class="relative block rounded px-3 py-1.5 text-sm text-neutral-600 
-                                        transition-all duration-300 dark:text-white dark:hover:bg-green-700 dark:hover:text-white">...</span>
+                                    <span class="relative block  text-sm text-neutral-600 
+                                        transition-all duration-300 dark:text-white dark:hover:bg-[#CAE8AC] dark:hover:text-white"
+                                        >...</span>
                                 </li>
                             @endif  
                         @endforeach
-                        @if ($sensor->hasMorePages())
+                        @if ($paginator->hasMorePages())
                             <li>
-                                <a class="relative block rounded-full bg-gray-300 px-3 py-1.5 text-sm text-neutral-600 
-                                    transition-all duration-300 hover:bg-green-100 dark:text-white dark:hover:bg-green-700 dark:hover:text-white"
-                                    href="{{ $sensor->nextPageUrl() }}">&gt;</a>
+                                <a class="flex items-center justify-center relative block rounded-full bg-gray-300 text-sm text-neutral-600 
+                                    transition-all duration-300 hover:bg-[#CAE8AC] dark:text-white dark:hover:bg-green-700 dark:hover:text-white"
+                                    style="width: 19px; height: 19px; line-height: 19px;"
+            
+                                    href="{{ $paginator->nextPageUrl() }}"
+                                    >&gt;</a>
                             </li>
-                            @else
+                        @else
                             <li>
-                                <a class="relative block rounded-full bg-gray-300 px-3 py-1.5 text-sm text-neutral-500 
-                                    transition-all duration-300 dark:text-neutral-400 hover:bg-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                                    href="#!">&gt;</a>
+                                <a class="flex items-center justify-center relative block rounded-full bg-gray-300  text-sm text-neutral-500 
+                                    transition-all duration-300  hover:bg-[#CAE8AC] dark:hover:bg-gray-700 dark:hover:text-white"
+                                    href="#!"
+                                    style="width: 19px; height: 19px; line-height: 19px;">
+                                    &gt;</a>
                             </li>
                         @endif
                     </ul>
                 </nav>
+            
                                                  
             </div>
         </div>
@@ -177,8 +192,13 @@
                <form action="{{ route('sensor-store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-4">
-                    <label for="id_lahan" class="block text-gray-700 font-bold">ID LAHAN</label>
-                    <input type="text" name="id_lahan" id="id_lahan" class="border border-gray-300 rounded px-3 py-2 w-full">
+                    <label for="id_user" class="block text-gray-700 font-bold">ID FARMER</label>
+                    <select name="id_lahan" id="id_lahan" class="border border-gray-300 rounded px-3 py-2 w-full">
+                        <option value="">Pilih Lahan</option>
+                        @foreach($lahan as $l)
+                            <option value="{{ $l->id_lahan }}">{{ $l->id_lahan }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="mb-4">
                     <label for="tanggal_aktivasi" class="block text-gray-700 font-bold">TANGGAL AKTIVASI</label>

@@ -7,6 +7,8 @@
     use Illuminate\Support\Facades\Http;
     use Illuminate\Pagination\LengthAwarePaginator;
     use Illuminate\Support\Facades\Session;
+    use Illuminate\Pagination\Paginator;
+    use Illuminate\Support\Collection;
 
 
     use App\Models\DataFeed;
@@ -77,16 +79,38 @@
        
         public function daftar_farmer()
         {
-            $dataFeed = new DataFeed();
-            $batas = 15;
-            $users = User::with(['lahan.sensor'])
-            ->orderBy('id', 'desc')
-            ->paginate($batas);
-            $no=$batas*($users->currentPage() - 1);
+            $response = Http::get("http://localhost/smartfarm/smartfarm_api.php");
+            
+            if ($response->successful()) {
 
-            return view('pages/add/daftar-farmer', compact('dataFeed', 'users'));
+                    $apiData = $response->json();
+                    $users = collect(json_decode(json_encode($apiData['users']), false))
+                    ->where('level', 'user')
+                    ->sortByDesc('id'); 
+                    $perPage = 5; 
+                    $currentPage = request()->input('page', 1); 
+                    $paginator = new LengthAwarePaginator(
+                    $users->forPage($currentPage, $perPage), 
+                    $users->count(), 
+                    $perPage, 
+                    $currentPage 
+                    );
+                    $paginator->setPath(request()->url());
+                    $lahan = collect(json_decode(json_encode($apiData['lahan']), false));
+                    $sensor = collect(json_decode(json_encode($apiData['sensor']), false));
+
+
+                    foreach ($users as $user) {
+                        $userLahanIds = collect($lahan)->where('id_user', $user->id)->pluck('id_lahan');
+                        $totalUniqueSensors = collect($sensor)->whereIn('id_lahan', $userLahanIds)->unique('id_sensor')->count();
+                        $user->totalUniqueSensors = $totalUniqueSensors;
+                    }
+            return view('pages/add/daftar-farmer', compact('paginator', 'users','lahan','sensor'));
+        
+
         }
-
+    }
+        
         public function daftar_sensor()
         {
             $dataFeed = new DataFeed();
@@ -152,33 +176,7 @@
 
 
         //STORE//
-        public function store_farmer(Request $request)
-        {
-            $request->validate([
-                'name' => 'required',
-                'email' => 'required|email|unique:users,email',
-                'password' => 'required|min:8',
-                'alamat_user' => 'required'
-            ], [
-                'name.required' => 'Nama wajib diisi!',
-                'email.required' => 'Email wajib diisi!',
-                'password.required' => 'Password wajib diisi!',
-                'alamat_lahan.required' => 'Alamat lahan wajib diisi',
-            ]);
-
-            $batas = 15;
-            $user= User::orderBy('id', 'desc')->paginate($batas);
-            User::create([
-                'name' =>$request->name,
-                'email' => $request->email,
-                'password' => bcrypt($request->password),
-                'alamat_user' => $request->alamat_user
-                
-            ]);
-
-
-            return redirect('/pages/add/daftar-farmer')->with('tambah', 'Data berhasil ditambahkan');
-        }
+       
 
         public function store_lahan(Request $request)
         {
@@ -372,6 +370,35 @@
             $sensor->tanggal_aktivasi = $request->input('tanggal_aktivasi');
             $sensor->save();
         return redirect('/pages/add/daftar-sensor')->with('simpan', 'Sensor updated successfully');
+        }
+
+        public function form_auth_update(Request $request, $id)
+        {
+            // Validasi form
+            $request->validate([
+                'name' => 'required',
+                'email' => 'required|email|unique:users,email,' . $id,
+                'password' => 'required|min:8',
+                'alamat_user' => 'required',
+                'id' => 'required',
+            ]);
+        
+            try {
+                $user = User::findOrFail($id);
+                $user->name = $request->input('name');
+                $user->email = $request->input('email');
+                $user->id = $request->input('id');
+                $user->password = bcrypt($request->input('password'));
+                $user->alamat_user = $request->input('alamat_user');
+                $user->save();
+                auth()->login($user);
+
+                return redirect('/pages/add/daftar-farmer')->with('simpan', 'Farmer updated successfully');
+            } catch (\Exception $e) {
+                \Log::error('Error in form_farmer_update: ' . $e->getMessage());
+        
+                return back()->with('error', 'Error updating farmer');
+            }
         }
 
 }

@@ -76,6 +76,13 @@
                                 </a>
                             </li>
 
+                            <li>
+                                <a href="{{ route('download.data') }}" class="flex">
+                                    <img src="{{ asset('images/farmer-s/download.png') }}" class="w-6 h-6" alt="Lahan Icon">
+                                    <span class="menu-text ms-6 text-[#818280] focus:text-[#416D14]">Download Data</span>
+                                </a>
+                            </li>
+
                             <!-- Daftar Sensor -->
                             <li>
                                 <a href="" class="flex" id="sensorLink">
@@ -107,7 +114,7 @@
 
                             <!-- Curah Hujan -->
                             <li>
-                                <a href="{{ route('hujan.lihat') }}" class="flex group">
+                                <a href="{{ route('raindrop') }}" class="flex group">
                                     <img src="{{ asset('images/farmer-s/curah-hujan.svg') }}" class="w-6 h-6" alt="">
                                     <span class="menu-text ms-6 text-[#818280] focus:text-[#416D14]">Curah Hujan</span>
                                 </a>

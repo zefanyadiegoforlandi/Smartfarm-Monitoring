@@ -77,7 +77,6 @@
                             <td class="py-2 px-4 border-b text-center">{{ $u->email}}</td>
                             <td class="py-2 px-4 border-b text-center">{{ $u->alamat_user }}</td>
                             <td class="py-2 px-4 border-b text-center">
-                                {{ $u->lahan->flatMap->sensor->count() }}
                             </td>
                         </tr>
                     @endif
@@ -133,26 +132,197 @@
 
 
         </div>
-    </div>
 
-    <script>
-        // JavaScript to handle modal interactions
-        const openModalButton = document.getElementById('openModal');
-        const closeModalButton = document.getElementById('closeModal');
-        const modal = document.getElementById('modal');
 
-        openModalButton.addEventListener('click', () => {
-            modal.classList.remove('hidden');
-        });
+        <script>
+            // JavaScript to handle modal interactions
+            const openModalButton = document.getElementById('openModal');
+            const closeModalButton = document.getElementById('closeModal');
+            const modal = document.getElementById('modal');
 
-        closeModalButton.addEventListener('click', () => {
-            modal.classList.add('hidden');
-        });
+            openModalButton.addEventListener('click', () => {
+                modal.classList.remove('hidden');
+            });
 
-        function closeModal() {
-            modal.classList.add('hidden');
-        }
-    </script>
+            closeModalButton.addEventListener('click', () => {
+                modal.classList.add('hidden');
+            });
+
+            function closeModal() {
+                modal.classList.add('hidden');
+            }
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const successMessage = "{{ session('simpan') }}";
+        
+                if (successMessage) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+        
+                    Toast.fire({
+                        icon: 'success',
+                        title: successMessage
+                    });
+                }
+            });
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const successMessage = "{{ session('delete') }}";
+        
+                if (successMessage) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+        
+                    Toast.fire({
+                        icon: 'success',
+                        title: successMessage
+                    });
+                }
+            });
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const successMessage = "{{ session('tambah') }}";
+        
+                if (successMessage) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+        
+                    Toast.fire({
+                        icon: 'success',
+                        title: successMessage
+                    });
+                }
+            });
+        </script>
+
+        @if(session('errors'))
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: "{{ $errors->first() }}", // Mengambil pesan kesalahan pertama dari laravel
+                });
+            });
+        </script>
+        @endif
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const successMessage = "{{ session('simpan') }}";
+        
+                if (successMessage) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+        
+                    Toast.fire({
+                        icon: 'success',
+                        title: successMessage
+                    });
+                }
+            });
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const successMessage = "{{ session('delete') }}";
+        
+                if (successMessage) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+        
+                    Toast.fire({
+                        icon: 'success',
+                        title: successMessage
+                    });
+                }
+            });
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const successMessage = "{{ session('tambah') }}";
+        
+                if (successMessage) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+        
+                    Toast.fire({
+                        icon: 'success',
+                        title: successMessage
+                    });
+                }
+            });
+        </script>
+
+        @if(session('errors'))
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: "{{ $errors->first() }}", // Mengambil pesan kesalahan pertama dari laravel
+                });
+            });
+        </script>
+        @endif
 
 
     </div>

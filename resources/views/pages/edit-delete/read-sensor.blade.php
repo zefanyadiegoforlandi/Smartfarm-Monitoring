@@ -25,7 +25,7 @@
                     <div class="mb-4">
                         <label for="nama" class="block text-gray-700 font-bold">Letak Sensor</label>
                         <div name="nama" id="nama" class=" rounded px-3 py-2 w-full">
-                            {{ $sensor->lahan->alamat_lahan }}
+                            {{ $sensor->alamat_lahan }}
                         </div>    
                     </div>
                     <div class="mb-4">

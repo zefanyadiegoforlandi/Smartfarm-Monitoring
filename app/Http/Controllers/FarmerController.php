@@ -127,6 +127,10 @@ class FarmerController extends Controller
     {
         return view('/user/user-dashboard');
     }
+    public function download_data()
+    {
+        return view('/user/download-data');
+    }
 
     public function lihat_akun()
     {
@@ -137,30 +141,11 @@ class FarmerController extends Controller
     public function lihat_suhu(Request $request)
     {
         $user = User::with('lahan.sensor.dataSensor')->find(Auth::id());
-        $dataSensor = collect();
+        $dataSensor = DataSensor::orderBy('waktu_perekaman')->orderBy('id_sensor')->get();
         $dataLahan = $user->lahan ?? collect();
     
-        if ($dataLahan) {
-            $selectedLahanId = $request->input('filter', '');
-    
-            $dataSensor = $dataLahan->flatMap(function ($lahan) use ($selectedLahanId) {
-                return $lahan->sensor->flatMap(function ($sensor) use ($selectedLahanId) {
-                    return $sensor->dataSensor
-                        ->where('id_lahan', $selectedLahanId)
-                        ->sortBy('waktu_perekaman');
-                });
-            });
-        }
-    
-        return view('user.suhu', compact('dataSensor', 'dataLahan'));
+        return view('/user/suhu', compact('dataSensor', 'dataLahan'));
     }
-    
-    
-
-
-
-    
-
     
     public function lihat_hujan()
     {

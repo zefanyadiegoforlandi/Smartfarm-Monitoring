@@ -21,6 +21,7 @@
         "chartjs-adapter-moment": "^1.0.1",
         "flatpickr": "^4.6.13",
         "moment": "^2.29.4",
-        "sweetalert2": "^11.10.1"
+        "sweetalert2": "^11.10.1",
+        "vue": "^3.4.27"
     }
 }

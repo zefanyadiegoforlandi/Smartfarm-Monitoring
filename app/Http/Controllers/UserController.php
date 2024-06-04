@@ -54,11 +54,11 @@ class UserController extends Controller
             'password' => 'required|min:8',
             'id' => 'required',
         ]);
-
+    
         try {
             // Ambil data pengguna
             $user = User::findOrFail($id);
-
+    
             // Perbarui data pengguna
             $user->update([
                 'name' => $request->input('name'),
@@ -66,20 +66,18 @@ class UserController extends Controller
                 'password' => bcrypt($request->input('password')),
                 'alamat_user' => $request->input('alamat_user'),
             ]);
-
+    
             // Perbarui data sesi
-            session(['user' => $user->toArray()]);
-
-            // Regenerasi sesi
-            Session::regenerate();
-
+            session()->regenerate();
+    
             return redirect('/pages/add/daftar-farmer')->with('success', 'Farmer updated successfully');
         } catch (\Exception $e) {
             \Log::error('Error in form_auth_update: ' . $e->getMessage());
-
-            return back()->with('error', 'Error updating farmer');
+    
+            return back()->with('error', 'Error updating farmer. Please try again.');
         }
     }
+    
 }
 
 

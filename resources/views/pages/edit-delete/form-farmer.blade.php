@@ -15,7 +15,7 @@
             <div class="flex-col justify-center items-center md:bg-[#C6D2B9] py-20 md:px-20">
                 <img src="{{ asset('images/user_besar_icon.svg') }}" class="w-162 h-162 overflow-hidden rounded-full mb-4 mx-auto">
                 <div class="text-center">
-                    <p class="font-semibold text-black hidden md:block text-4xl">{{ $users->name }}</p>
+                    <p class="font-semibold text-black hidden md:block text-4xl">{{ $user->name }}</p>
                     <p class="text-black hidden md:block text-2xl">User</p>
                 </div>
                 <div class="flex justify-center space-x-4 mt-4">
@@ -28,69 +28,54 @@
             
     
             <div class="flex-col flex-1 md:p-9">
-                <form id="submit-form" action="{{ route('form-farmer.update', ['id' => $users->id]) }}" method="POST" enctype="multipart/form-data">
+                <form id="submit-form" action="{{ route('form-farmer.update', ['id' => $user->id]) }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    @method('PUT') 
+                    @method('POST') 
                     <table class="w-full">
                         <tbody class="bg-white">
                             <tr>
                                 <th class="text-start pe-9">Nama</th>
                                 <td class=" py-4">
-                                    <input type="text" name="name" id="name" value="{{ $users->name }}" class="border border-gray-300 rounded px-3 py-2 w-3/4">
+                                    <input type="text" name="name" id="name" value="{{ $user->name }}" class="border border-gray-300 rounded px-3 py-2 w-3/4">
                                 </td>
                             </tr>
                             <tr>
                                 <th class="text-start pe-9">Email</th>
                                 <td class=" py-4">
-                                    <input type="text" name="email" id="email" value="{{ $users->email }}" class="border border-gray-300 rounded px-3 py-2 w-3/4">
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="text-start pe-9">Farmer ID</th>
-                                <td class=" py-4">
-                                    <input type="text" name="id" id="id" value="{{ $users->id }}" class="border border-gray-300 rounded px-3 py-2 w-3/4">
-
+                                    <input type="text" name="email" id="email" value="{{ $user->email }}" class="border border-gray-300 rounded px-3 py-2 w-3/4">
                                 </td>
                             </tr>
                             <tr>
                                 <th class="text-start pe-9">Password</th>
                                 <td class=" py-4">
-                                    <input type="password" name="password" id="password" value="{{ $users->password }}" class="border border-gray-300 rounded px-3 py-2 w-3/4">
+                                    <input type="password" name="password" id="password" value="{{ $user->password }}" class="border border-gray-300 rounded px-3 py-2 w-3/4">
                                 </td>
                             </tr>
                             <tr>
                                 <th class="text-start pe-9">Alamat</th>
                                 <td class=" py-4">
-                                    <input type="text" name="alamat_user" id="alamat_user" value="{{ $users->alamat_user }}" class="border border-gray-300 rounded px-3 py-2 w-3/4">
+                                    <input type="text" name="alamat_user" id="alamat_user" value="{{ $user->alamat_user }}" class="border border-gray-300 rounded px-3 py-2 w-3/4">
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </form>    
     
-                <div class="">
-                    <h2 class="text-base font-bold mb-5">Informasi Sensor</h2>
-                    <table style="width: 100%;">
-                        <thead style="height: 53px; background-color:#ECF0E8; color:#416D14">
-                            <tr>
-                                <th class="py-2 px-4 border-b">ID Lahan</th>
-                                <th class="py-2 px-4 border-b">ID Sensor</th>
-                        </thead>
-    
-                        <tbody style="height: 53px;">
-                            @foreach ($sensor as $lahan)
-                                @foreach ($lahan->sensor as $s)
-                                    <tr>
-                                        <td class="py-2 px-4 border-b text-center">{{ $lahan->id_lahan }}</td>
-                                        <td class="py-2 px-4 border-b text-center">{{ $s->id_sensor }}</td>
-                                    </tr>
-                                @endforeach
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
             </div>
         </div>
+        
+    @if(session('errors'))
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: "{{ $errors->first() }}", // Mengambil pesan kesalahan pertama dari laravel
+            });
+        });
+    </script>
+    @endif
     </div>
 </x-app-layout>
     
