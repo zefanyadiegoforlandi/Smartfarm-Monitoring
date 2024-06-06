@@ -62,24 +62,17 @@
                         <ul class="space-y-5 text-xl">
                             <!-- Dashboard -->
                             <li>
-                                <a href="{{ route('dashboard.lihat') }}" class="flex">
+                                <a href="{{ route('dashboard.lihat') }}" class="flex dashboard" onclick="changeColor(this, 'dashboard')">
                                     <img src="{{ asset('images/farmer-s/dashboard.svg') }}" class="w-6 h-6" alt="Dashboard Icon">
-                                    <span class="menu-text ms-6 text-[#818280] focus:text-[#416D14]">Dashboard</span>
+                                    <span class="menu-text ms-6 text-[#818280] focus:text-[#416D14]" id="dashboard">Dashboard</span>
                                 </a>
                             </li>
 
                             <!-- pertinjau -->
                             <li>
-                                <a href="{{ route('pertinjau.lihat') }}" class="flex">
+                                <a href="{{ route('pertinjau.lihat') }}" class="flex pertinjau" onclick="changeColor(this, 'pertinjau')">
                                     <img src="{{ asset('images/farmer-s/pertinjau.svg') }}" class="w-6 h-6" alt="Lahan Icon">
-                                    <span class="menu-text ms-6 text-[#818280] focus:text-[#416D14]">Pertinjau</span>
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="{{ route('download.data') }}" class="flex">
-                                    <img src="{{ asset('images/farmer-s/download.png') }}" class="w-6 h-6" alt="Lahan Icon">
-                                    <span class="menu-text ms-6 text-[#818280] focus:text-[#416D14]">Download Data</span>
+                                    <span class="menu-text ms-6 text-[#818280] focus:text-[#416D14]" id="pertinjau">Pertinjau</span>
                                 </a>
                             </li>
 
@@ -238,6 +231,36 @@
             // Toggle visibility of the 8 items div
             const sensorItems = document.getElementById('sensorItems');
             sensorItems.classList.toggle('hidden');
+        });
+
+        function changeColor(element, linkId) {
+            const allLinks = document.querySelectorAll('.menu-text');
+            allLinks.forEach(link => {
+                link.style.color = '#818280'; // Reset semua tautan ke warna default
+            });
+            element.querySelector('.menu-text').style.color = '#416D14';
+            localStorage.setItem('selectedColor', '#416D14'); // Simpan warna ke localStorage
+
+            // Contoh: Lakukan sesuatu berdasarkan ID tautan yang diklik
+            if (linkId === 'dashboard') {
+                localStorage.setItem('selectedId', 'dashboard');
+            } else if (linkId === 'pertinjau') {
+                localStorage.setItem('selectedId', 'pertinjau');
+            }
+        }
+
+        // Periksa localStorage saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            const selectedColor = localStorage.getItem('selectedColor');
+            const selectedId = localStorage.getItem('selectedId');
+            if (selectedId === 'dashboard') {
+                const changeStyleId = document.getElementById('dashboard');
+                changeStyleId.style.color = '#416D14';
+            } else if (selectedId === 'pertinjau') {
+                const changeStyleId = document.getElementById('pertinjau');
+                changeStyleId.style.color = '#416D14';
+            }
+            console.log(selectedId);
         });
     </script>
 

@@ -20,23 +20,30 @@
                 <div class="flex items-center justify-start xl:hidden">
                     <h1 class="font-semibold text-3xl lg:text-\[40px\]]">Hi, {{ Auth::user()->name }}</h1>
                 </div>
-                <div class="w-full hidden xl:flex">
+                <div class="hidden xl:flex">
                     <p class="text-center text-base">
                         Pantau kondisi lingkungan di sekitar perkebunanmu sekarang!
                     </p>
                 </div>
-                <div class="flex items-center justify-end">
-                    <div class="relative w-[124px] h-[25px] lg:w-[160px] lg:h-[30px]">
-                        <select id="filter" name="filter" class="block appearance-none w-full bg-[#416D14] border border-gray-300 text-white py-1 px-1 rounded-lg leading-tight  text-center text-xs lg:text-sm font-semibold">
-                            <option value="L001">L001</option>
-                            <option value="L002">L002</option>
-                            <option value="L003">L003</option>
-                            <option value="L004">L004</option>
-                        </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white">
-                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                <path d="M5 8l5 5 5-5z" />
-                            </svg>
+                <div class="flex">
+                    <a href="{{ route('download.data') }}" class="flex">
+                        <button class="rounded-full bg-[#416D14] mr-2">
+                            <img src="{{ asset('images/farmer-s/download.png') }}" class="p-1 "> 
+                        </button>
+                    </a>
+                    <div class="flex items-center justify-end">
+                        <div class="relative w-[124px] h-[25px] lg:w-[160px] lg:h-[30px]">
+                            <select id="filter" name="filter" class="block appearance-none w-full bg-[#416D14] border border-gray-300 text-white py-1 px-1 rounded-lg leading-tight  text-center text-xs lg:text-sm font-semibold">
+                                <option value="L001">L001</option>
+                                <option value="L002">L002</option>
+                                <option value="L003">L003</option>
+                                <option value="L004">L004</option>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white">
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <path d="M5 8l5 5 5-5z" />
+                                </svg>
+                            </div>
                         </div>
                     </div>
                 </div>
