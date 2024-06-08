@@ -9,6 +9,7 @@ use App\Http\Controllers\DaftarSensorController;
 use App\Http\Controllers\FarmerController;
 use App\Http\Controllers\DataRainDropController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Http;
 
 
@@ -23,17 +24,13 @@ use Illuminate\Support\Facades\Http;
 |
 */
 
-Route::redirect('/', 'login');
+Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/', [LoginController::class, 'login']);
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
-    // Route for the getting the data feed
-    Route::get('/json-data-feed', [DataFeedController::class, 'getDataFeed'])->name('json_data_feed');
-
+Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::fallback(function() {
-        return view('pages/utility/404');
-    });
+    Route::get('/dashboard/lihat', [DashboardController::class, 'lihat'])->name('dashboard.lihat');
 });
 
 Route::get('/components/table-daftar-lahan', [DashboardController::class, 'table_daftar_lahan'])->name('table-daftar-lahan');
@@ -98,7 +95,7 @@ Route::get('/pages/data-sensor/raindrop', [DataRainDropController::class, 'getDa
 Route::get('/update-data-grafik', [DataRainDropController::class, 'updateDataGrafik_RainDrop']);
 Route::get('/update-data-table', [DataRainDropController::class, 'updateDataTable_RainDrop'])->name('update-data-table');
 
-
+Route::get('/sensors/{id_lahan}', [FarmerController::class, 'getSensorsByLahan']);
 
 
 

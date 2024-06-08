@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\DataSensor;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Sensor;
 
 
 
@@ -125,8 +126,27 @@ class FarmerController extends Controller
 
     public function lihat_dashboard()
     {
-        return view('/user/user-dashboard');
+        $lahan = session('lahan');
+        $selectedLahan = session('selected_lahan', $lahan[0]->id_lahan);
+        return view('/user/user-dashboard', [
+            'lahan' => $lahan,
+            'sensors' => $this->getSensorsByLahan($selectedLahan) // Ambil sensor sesuai dengan id lahan
+        ]);
     }
+    
+    public function getSensorsByLahan($id_lahan)
+    {
+        $sensors = Sensor::where('id_lahan', $id_lahan)->get(); // Mengambil data sensor berdasarkan id_lahan
+        return response()->json($sensors); // Mengembalikan data JSON
+    }
+
+    public function getSensorDataById($id_sensor)
+    {
+        $sensorData = Sensor::where('id_sensor', $id_sensor)->first(); // Mengambil data sensor berdasarkan id sensor
+        return response()->json($sensorData); // Mengembalikan data JSON
+    }
+    
+
     public function download_data()
     {
         return view('/user/download-data');

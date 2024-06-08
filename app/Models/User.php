@@ -12,11 +12,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens;
-    use HasFactory;
-    use HasProfilePhoto;
-    use Notifiable;
-    use TwoFactorAuthenticatable;
+    use HasApiTokens, HasFactory, HasProfilePhoto, Notifiable, TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -29,6 +25,8 @@ class User extends Authenticatable
         'email',
         'password',
         'alamat_user',
+        'level', // pastikan kolom level ada di sini
+
     ];
 
     /**
@@ -63,6 +61,8 @@ class User extends Authenticatable
 
     public function lahan()
     {
-        return $this->hasMany(Lahan::class,'id_user');
+        return $this->hasMany(Lahan::class, 'id_user');
     }
 }
+
+?>

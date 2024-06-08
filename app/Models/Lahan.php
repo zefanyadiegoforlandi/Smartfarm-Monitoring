@@ -19,6 +19,7 @@ class Lahan extends Model
         'alamat_lahan',
         'luas_lahan',
         'id_user',
+        'nama_lahan',
     ];
 
     public function sensor()

@@ -18,7 +18,7 @@
             </div>
             <div class="flex items-center justify-between mb-5">
                 <div class="flex items-center justify-start xl:hidden">
-                    <h1 class="font-semibold text-3xl lg:text-\[40px\]]">Hi, {{ Auth::user()->name }}</h1>
+                    <h1 class="font-semibold text-3xl lg:text-[40px]">Hi, {{ Auth::user()->name }}</h1>
                 </div>
                 <div class="hidden xl:flex">
                     <p class="text-center text-base">
@@ -27,18 +27,19 @@
                 </div>
                 <div class="flex">
                     <a href="{{ route('download.data') }}" class="flex">
-                        <button class="rounded-full bg-[#416D14] mr-2">
-                            <img src="{{ asset('images/farmer-s/download.png') }}" class="p-1 "> 
+                        <button class="rounded-full bg-[#416D14] mr-4">
+                            <img src="{{ asset('images/farmer-s/download.png') }}" class="p-1 px-1"> 
                         </button>
                     </a>
+                    <!-- Dalam view, akses variabel 'lahan' yang dikirimkan dari kontroler -->
                     <div class="flex items-center justify-end">
                         <div class="relative w-[124px] h-[25px] lg:w-[160px] lg:h-[30px]">
-                            <select id="filter" name="filter" class="block appearance-none w-full bg-[#416D14] border border-gray-300 text-white py-1 px-1 rounded-lg leading-tight  text-center text-xs lg:text-sm font-semibold">
-                                <option value="L001">L001</option>
-                                <option value="L002">L002</option>
-                                <option value="L003">L003</option>
-                                <option value="L004">L004</option>
-                            </select>
+                        <select id="filter" name="filter" onchange="filterChanged()" class="block appearance-none w-full bg-[#416D14] border border-gray-300 text-white py-1 px-1 rounded-lg leading-tight  text-center text-xs lg:text-sm font-semibold">
+                            @foreach(session('lahan') as $item)
+                                <option value="{{ $item->id_lahan }}" class="bg-[#ffffff] text-black">{{ $item->nama_lahan }}</option>
+                            @endforeach
+                        </select>
+                        
                             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                     <path d="M5 8l5 5 5-5z" />
@@ -355,4 +356,42 @@
     </div>
 </div>
 
+<div id="sensor-log">
+<script>
+    function filterChanged() {
+        const selectedLahan = document.getElementById('filter').value;
+
+        fetch(`/sensors/${selectedLahan}`)
+            .then(response => response.json())
+            .then(data => {
+                updateSensorLog(data);
+            })
+            .catch(error => console.error('Error fetching sensors:', error));
+    }
+
+    function updateSensorLog(sensors) {
+        const sensorLog = document.getElementById("sensor-log");
+        sensorLog.innerHTML = ''; // Clear existing log
+
+        sensors.forEach(sensor => {
+            const sensorId = sensor.id_sensor.toUpperCase(); // Ensure sensor ID is uppercase
+            fetch(`http://localhost/RESTful-API-Smartfarm-Monitoring/data_sensor/${sensorId}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Received sensor data:", data); // Log received data for debugging
+                    const sensorSuhuElement = document.getElementById('sensor-suhu');
+                    if (sensorSuhuElement) {
+                        sensorSuhuElement.textContent = data.suhu;
+                    }
+                })
+                .catch(error => console.error('Error fetching sensor data:', error));
+        });
+    }
+
+    // Trigger fetch on page load to load sensors based on default lahan selection
+    document.addEventListener('DOMContentLoaded', filterChanged);
+</script>
+
+
+</div>
 @endsection
