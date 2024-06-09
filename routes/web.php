@@ -27,8 +27,12 @@ use Illuminate\Support\Facades\Http;
 Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/', [LoginController::class, 'login']);
 
+Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/', [LoginController::class, 'login']);
 
-Route::middleware('auth')->group(function () {
+
+
+Route::middleware('jwt.auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/lihat', [DashboardController::class, 'lihat'])->name('dashboard.lihat');
 });
