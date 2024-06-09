@@ -48,68 +48,6 @@
 
             return view('pages/dashboard/dashboard', compact('dataFeed','users', 'sensor','lahan','jumlah_users', 'jumlah_lahan', 'jumlah_sensor'));
         }
-
-
-
-
-        //DAFTAR TABLE
-        public function daftar_lahan()
-        {
-            $dataFeed = new DataFeed();
-            $batas = 15;
-            $lahan= Lahan::orderByRaw("LENGTH(id_lahan),  id_lahan")->paginate($batas);
-            $currentPage = $lahan->currentPage();
-            $lastPage = $lahan->lastPage();
-            $pageRange = [];
-            $pageRange[] = 1; 
-            for ($i = max(2, $currentPage - 2); $i <= min($currentPage + 2, $lastPage - 1); $i++) {
-                $pageRange[] = $i;
-            }
-        
-            $pageRange[] = $lastPage;
-            $customPaginator = new LengthAwarePaginator(
-                $lahan->items(),
-                $lahan->total(),
-                $lahan->perPage(),
-                $currentPage,
-                ['path' => LengthAwarePaginator::resolveCurrentPath()]
-            );            
-            return view('pages/add/daftar-lahan', compact('dataFeed','lahan','customPaginator'));
-        }
-       
-        public function daftar_farmer()
-        {
-            $response = Http::get("http://localhost/smartfarm/smartfarm_api.php");
-            
-            if ($response->successful()) {
-
-                    $apiData = $response->json();
-                    $users = collect(json_decode(json_encode($apiData['users']), false))
-                    ->where('level', 'user')
-                    ->sortByDesc('id'); 
-                    $perPage = 5; 
-                    $currentPage = request()->input('page', 1); 
-                    $paginator = new LengthAwarePaginator(
-                    $users->forPage($currentPage, $perPage), 
-                    $users->count(), 
-                    $perPage, 
-                    $currentPage 
-                    );
-                    $paginator->setPath(request()->url());
-                    $lahan = collect(json_decode(json_encode($apiData['lahan']), false));
-                    $sensor = collect(json_decode(json_encode($apiData['sensor']), false));
-
-
-                    foreach ($users as $user) {
-                        $userLahanIds = collect($lahan)->where('id_user', $user->id)->pluck('id_lahan');
-                        $totalUniqueSensors = collect($sensor)->whereIn('id_lahan', $userLahanIds)->unique('id_sensor')->count();
-                        $user->totalUniqueSensors = $totalUniqueSensors;
-                    }
-            return view('pages/add/daftar-farmer', compact('paginator', 'users','lahan','sensor'));
-        
-
-        }
-    }
         
         public function daftar_sensor()
         {
