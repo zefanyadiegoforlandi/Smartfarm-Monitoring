@@ -32,22 +32,30 @@
                         </button>
                     </a>
                     <!-- Dalam view, akses variabel 'lahan' yang dikirimkan dari kontroler -->
-                    <div class="flex items-center justify-end">
-                        <div class="relative w-[124px] h-[25px] lg:w-[160px] lg:h-[30px]">
-                        <select id="filter" name="filter" onchange="filterChanged()" class="block appearance-none w-full bg-[#416D14] border border-gray-300 text-white py-1 px-1 rounded-lg leading-tight  text-center text-xs lg:text-sm font-semibold">
-                            @foreach(session('lahan') as $item)
-                                <option value="{{ $item->id_lahan }}" class="bg-[#ffffff] text-black">{{ $item->nama_lahan }}</option>
+                @php
+                    $filters = [
+                        'option1' => 'Option 1',
+                        'option2' => 'Option 2',
+                        'option3' => 'Option 3'
+                    ];
+                @endphp
+                
+                <div class="flex items-center justify-end">
+                    <div class="relative w-[124px] h-[25px] lg:w-[160px] lg:h-[30px]">
+                        <select id="filter" name="filter" onchange="filterChanged()" class="block appearance-none w-full bg-[#416D14] border border-gray-300 text-white py-1 px-1 rounded-lg leading-tight text-center text-xs lg:text-sm font-semibold">
+                            @foreach($filters as $value => $label)
+                                <option value="{{ $value }}" class="bg-[#ffffff] text-black">{{ $label }}</option>
                             @endforeach
                         </select>
                         
-                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path d="M5 8l5 5 5-5z" />
-                                </svg>
-                            </div>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white">
+                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <path d="M5 8l5 5 5-5z" />
+                            </svg>
                         </div>
                     </div>
                 </div>
+                
             </div>
 
             <div class="w-full mb-5 xl:hidden">

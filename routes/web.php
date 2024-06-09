@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DataFeedController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DashboardUserController;
+
 use App\Http\Controllers\DaftarFarmerController;
 use App\Http\Controllers\DaftarLahanController;
 use App\Http\Controllers\DaftarSensorController;
@@ -27,14 +29,9 @@ use Illuminate\Support\Facades\Http;
 Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/', [LoginController::class, 'login']);
 
-Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('/', [LoginController::class, 'login']);
-
-
-
 Route::middleware('jwt.auth')->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/dashboard/lihat', [DashboardController::class, 'lihat'])->name('dashboard.lihat');
+    Route::get('/pages/dashboard/admin-dashboard', [DashboardController::class, 'index'])->name('admin-dashboard');
+    Route::get('/pages/dashboard/user-dashboard', [DashboardUserController::class, 'index'])->name('user-dashboard');
 });
 
 Route::get('/components/table-daftar-lahan', [DashboardController::class, 'table_daftar_lahan'])->name('table-daftar-lahan');

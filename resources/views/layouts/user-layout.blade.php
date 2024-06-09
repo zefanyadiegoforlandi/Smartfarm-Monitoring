@@ -79,7 +79,7 @@
                         <ul class="space-y-5 text-xl">
                             <!-- Dashboard -->
                             <li>
-                                <a href="{{ route('dashboard.lihat') }}" class="flex dashboard" onclick="changeColor(this, 'dashboard')">
+                                <a href="{{ route('user-dashboard') }}" class="flex dashboard" onclick="changeColor(this, 'dashboard')">
                                     <img src="{{ asset('images/farmer-s/dashboard-selected.svg') }}" class="w-6 h-6" style="display: none;" alt="Dashboard Icon" id="selected">
                                     <img src="{{ asset('images/farmer-s/dashboard.svg') }}" class="w-6 h-6" id="non-selected" alt="Dashboard Icon">
                                     <span class="menu-text ms-6 text-[#818280] focus:text-[#416D14]" id="dashboard">Dashboard</span>

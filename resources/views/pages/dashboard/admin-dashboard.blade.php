@@ -1,6 +1,7 @@
 <x-app-layout>
     <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-4">
-        
+        <!-- Welcome banner -->
+
         <!-- Welcome banner -->
         <div class="welcome-css">
             <div class="px-4 sm:px-6 lg:px-8" >
@@ -36,7 +37,7 @@
                     
                 </div>
             
-                <!-- Content -->
+                <!-- Content ini-->
             
                     <div class="flex relative flex items-center justify-between">
                         <div>
@@ -52,7 +53,7 @@
 
         <div class="farmers-list flex flex-col sm:flex-row mx-auto gap-8 ml-20">
             <div class="custom-frame-3 flex justify-center items-center bg-green-200 p-4 rounded-xl" 
-                style=" max-width: 290px; height: 116px; border-radius: 27px; background-color: #C8E0AF;">
+                style=" max-width: 290px; height: 117px; border-radius: 27px; background-color: #C8E0AF;">
                 <div class="teks-frame">
                     <div class="text-frame-1 text-center" style="font-size: 24px">
                         <p class="text-dark font-medium text-league-spartan ml-3"> Petani</p>

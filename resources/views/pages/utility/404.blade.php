@@ -8,7 +8,6 @@
                     <img src="{{ asset('images/404-illustration.svg') }}" width="176" height="176" alt="404 illustration" />
                 </div>
                 <div class="mb-6">Hmm...this page doesn’t exist. Try searching for something else!</div>
-                <a href="{{ route('dashboard') }}" class="btn bg-green-500 hover:bg-indigo-600 text-white">Back To Dashboard</a>
             </div>
 
         </div>

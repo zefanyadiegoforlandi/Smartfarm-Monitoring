@@ -45,9 +45,9 @@ class LoginController extends Controller
 
             // Redirect berdasarkan level pengguna
             if ($level === 'admin') {
-                return redirect()->intended('/dashboard');
+                return redirect()->intended(route('admin-dashboard'));
             } else {
-                return redirect()->intended('/dashboard.lihat');
+                return redirect()->intended(route('user-dashboard'));
             }
         }
 
