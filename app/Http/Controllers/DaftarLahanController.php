@@ -137,11 +137,8 @@
 
 
 
-
-
-
-
     public function read_lahan_edit($id_lahan) {
+        
         $response = Http::get("http://localhost/smartfarm/smartfarm_api.php");
             
         if ($response->successful()) {

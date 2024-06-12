@@ -36,21 +36,27 @@ class LoginController extends Controller
             $data = $response->json();
             $token = $data['token'];
 
-            // Decode JWT token untuk mendapatkan level pengguna
-            $decoded = JWT::decode($token, new Key($key, 'HS256'));
-            $level = $decoded->level;  // Mengambil level dari token yang didecode
+            try {
+                $decoded = JWT::decode($token, new Key($key, 'HS256'));
+                $level = $decoded->level;  
+                
+                // Simpan token di session atau cookie
+                session(['jwt' => $token]);  // Contoh menggunakan session
 
-            // Simpan token di session atau cookie
-            session(['jwt' => $token]);  // Contoh menggunakan session
-
-            // Redirect berdasarkan level pengguna
-            if ($level === 'admin') {
-                return redirect()->intended(route('admin-dashboard'));
-            } else {
-                return redirect()->intended(route('user-dashboard'));
+                // Redirect berdasarkan level pengguna
+                if ($level === 'admin') {
+                    return redirect()->intended(route('admin-dashboard'));
+                } else {
+                    return redirect()->intended(route('user-dashboard'));
+                }
+            } catch (\Exception $e) {
+                return back()->withInput()->withErrors(['login' => 'Token tidak valid.']);
             }
+        } elseif ($response->status() == 401) {
+            // Cek status respons API
+            return back()->withInput()->withErrors(['login' => 'Email atau password salah.']);
+        } else {
+            return back()->withInput()->withErrors(['login' => 'API tidak merespons.']);
         }
-
-        return back()->withInput()->withErrors(['login' => 'Email atau password tidak valid atau API tidak merespons.']);
     }
 }
