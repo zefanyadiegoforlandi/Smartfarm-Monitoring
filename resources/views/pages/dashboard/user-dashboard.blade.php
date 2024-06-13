@@ -9,7 +9,7 @@
                     <img src="{{ asset('images/tonggle_sidebar.svg') }}">
                 </span>
                 <div class="flex items-center justify-start hidden xl:flex">
-                    <h1 class="font-semibold text-3xl">Hi, </h1>
+                    <h1 class="font-semibold text-3xl">Hi, {{ $name }}</h1>
                 </div>
                 <div class="flex items-center justify-end">
                     <p class="font-medium text-[13px] md:text-base me-2"><?php echo date('d F Y'); ?></p>
@@ -18,7 +18,7 @@
             </div>
             <div class="flex items-center justify-between mb-5">
                 <div class="flex items-center justify-start xl:hidden">
-                    <h1 class="font-semibold text-3xl lg:text-[40px]">Hi, </h1>
+                    <h1 class="font-semibold text-3xl lg:text-[40px]">Hi, {{ $name }}</h1>
                 </div>
                 <div class="hidden xl:flex">
                     <p class="text-center text-base">
@@ -35,8 +35,10 @@
                     <div class="flex items-center justify-end">
                         <div class="relative w-[124px] h-[25px] lg:w-[160px] lg:h-[30px]">
                         <select id="filter" name="filter" onchange="filterChanged()" class="block appearance-none w-full bg-[#416D14] border border-gray-300 text-white py-1 px-1 rounded-lg leading-tight  text-center text-xs lg:text-sm font-semibold">
-                        </select>
-                        
+                            @foreach($userLahanIds as $id)
+                                <option value="{{ $id }}" class="bg-white text-black">{{ $id }}</option>
+                            @endforeach
+                        </select> 
                             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-white">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                     <path d="M5 8l5 5 5-5z" />

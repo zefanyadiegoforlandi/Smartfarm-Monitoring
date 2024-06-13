@@ -21,15 +21,15 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        $key = "sm4rtf4rm";  // Gantikan dengan secret key yang sebenarnya
+        $key = "sm4rtf4rm";  // Replace with the actual secret key
 
-        // Data yang akan dikirim ke API
+        // Data to be sent to the API
         $postData = [
             'email' => $request->email,
             'password' => $request->password,
         ];
 
-        // Mengirim permintaan ke API eksternal sebagai form-data
+        // Send request to external API as form-data
         $response = Http::asForm()->post('http://localhost/smartfarm_jwt/login/', $postData);
 
         if ($response->successful()) {
@@ -39,11 +39,15 @@ class LoginController extends Controller
             try {
                 $decoded = JWT::decode($token, new Key($key, 'HS256'));
                 $level = $decoded->level;  
-                
-                // Simpan token di session atau cookie
-                session(['jwt' => $token]);  // Contoh menggunakan session
+                $name = $decoded->name;  // Assuming the name is part of the JWT payload
 
-                // Redirect berdasarkan level pengguna
+                // Debugging statement to check decoded token
+                // dd($decoded);
+                
+                // Save token and name in session
+                session(['jwt' => $token, 'name' => $name, 'level' => $level]);  // Save name in session
+
+                // Redirect based on user level
                 if ($level === 'admin') {
                     return redirect()->intended(route('admin-dashboard'));
                 } else {
@@ -53,7 +57,7 @@ class LoginController extends Controller
                 return back()->withInput()->withErrors(['login' => 'Token tidak valid.']);
             }
         } elseif ($response->status() == 401) {
-            // Cek status respons API
+            // Check API response status
             return back()->withInput()->withErrors(['login' => 'Email atau password salah.']);
         } else {
             return back()->withInput()->withErrors(['login' => 'API tidak merespons.']);

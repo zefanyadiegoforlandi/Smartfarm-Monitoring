@@ -180,7 +180,7 @@
                     <div id="animatedRectangle" class="user-info bg-white shadow-xl mx-5 px-2 py-3 mb-2 rounded-md " style="display: none;">
                         <a href="{{ route('akun.lihat') }}" class="info flex items-center mx-4">
                             <img src="{{ asset('images/user_button_icon.svg') }}" class="w-6 h-6" alt="User Image">
-                            <div class="ml-2 font-semibold text-slate-400"></div>
+                            <div class="ml-2 font-semibold text-slate-400">{{ $name }}</div>
                         </a>
                         <div class="logout flex items-center mx-4 mt-2">
                             <img src="{{ asset('images/logout_icon.svg') }}" class="w-6 h-6" alt="Logout Icon">
@@ -198,8 +198,8 @@
                                 <img src="{{ asset('images/user_besar_icon.svg') }}" class="w-full h-full object-cover" alt="User Image">
                             </div>
                             <div class=" ml-4">
-                                <div class="text-xl font-semibold"></div>
-                                <div class="text-sm"> </div>
+                                <div class="text-xl font-semibold">{{ $name }}</div>
+                                <div class="text-sm">User</div>
                             </div>
                         </div>
                     </button>

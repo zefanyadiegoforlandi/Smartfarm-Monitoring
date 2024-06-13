@@ -3,19 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Collection;
-use GuzzleHttp\Client;
 
 class DashboardUserController extends Controller
 {
-public function index()
+    public function index()
     {
         $token = session('jwt');
+        $name = session('name');
+        $level = session('level');
         
         if (!$token) {
             return redirect('/')->withErrors('Token tidak ditemukan. Silakan login terlebih dahulu.');
@@ -45,7 +42,10 @@ public function index()
                 $user->totalUniqueSensors = $totalUniqueSensors;
             }
 
-            return view('/pages/dashboard/user-dashboard', compact('paginator', 'sensor'));
+            // Pass the filtered $userLahanIds to the Blade template
+            return view('/pages/dashboard/user-dashboard', compact('paginator', 'sensor', 'name', 'level', 'userLahanIds'));
         }
+
+        return redirect('/')->withErrors('Gagal mengambil data dari API.');
     }
 }
