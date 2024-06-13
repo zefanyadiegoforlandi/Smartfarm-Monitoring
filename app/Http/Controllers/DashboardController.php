@@ -15,8 +15,13 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $response = Http::get("http://localhost/smartfarm/smartfarm_api.php");
-
+        $token = session('jwt');
+        
+        if (!$token) {
+            return redirect('/')->withErrors('Token tidak ditemukan. Silakan login terlebih dahulu.');
+        }
+    
+        $response = Http::withToken($token)->get("http://localhost/smartfarm_jwt/");
         if ($response->successful()) {
             $apiData = $response->json();
             $users = collect(json_decode(json_encode($apiData['users']), false))
@@ -46,8 +51,13 @@ class DashboardController extends Controller
 
     public function daftar_farmer()
     {
-        $response = Http::get("http://localhost/smartfarm/smartfarm_api.php");
-
+        $token = session('jwt');
+        
+        if (!$token) {
+            return redirect('/')->withErrors('Token tidak ditemukan. Silakan login terlebih dahulu.');
+        }
+    
+        $response = Http::withToken($token)->get("http://localhost/smartfarm_jwt/");
         if ($response->successful()) {
             $apiData = $response->json();
             $users = collect(json_decode(json_encode($apiData['users']), false))

@@ -66,6 +66,7 @@
                     <thead style="height: 53px; background-color:#ECF0E8; color:#416D14">
                         <tr>
                             <th class="py-2 px-4 border-b">ID LAHAN</th>
+                            <th class="py-2 px-4 border-b">NAMA LAHAN</th>
                             <th class="py-2 px-4 border-b">FARMER</th>
                             <th class="py-2 px-4 border-b">ALAMAT LAHAN</th>
                             <th class="py-2 px-4 border-b">LUAS LAHAN</th>
@@ -82,6 +83,8 @@
                                     <button class="submit" style="color:#416D14;">{{ $lahan->id_lahan}}</button>
                                 </form>
                             </td>
+                            <td class="py-2 px-4 border-b text-center">{{ $lahan->nama_lahan}}</td>
+
                             <td class="py-2 px-4 border-b text-center">{{ $lahan->user_name}}</td>
                             <td class="py-2 px-4 border-b text-center">{{ $lahan->alamat_lahan }}</td>
                             <td class="py-2 px-4 border-b text-center">{{ $lahan->luas_lahan }}</td>
@@ -181,7 +184,12 @@
                         @endforeach
                     </select>
                 </div>
-                
+
+                 
+                <div class="mb-4">
+                    <label for="nama_lahan" class="block text-gray-700 font-bold">Nama Lahan</label>
+                    <input type="text" name="nama_lahan" id="nama_lahan" class="border border-gray-300 rounded px-3 py-2 w-full">
+                </div>
                 <div class="mb-4">
                     <label for="alamat_lahan" class="block text-gray-700 font-bold">Alamat Lahan</label>
                     <input type="text" name="alamat_lahan" id="alamat_lahan" class="border border-gray-300 rounded px-3 py-2 w-full">
